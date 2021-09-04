@@ -173,10 +173,10 @@ _build_report(List<ReportModel> reports, BuildContext context) {
             ],
           ),
           Text(
-            report.date.toString(),
+            report.date.toString().split(" ")[0],
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[300],
+              color: Colors.grey[600],
             ),
           ),
           SizedBox(
@@ -191,27 +191,43 @@ _build_report(List<ReportModel> reports, BuildContext context) {
           SizedBox(
             height: 8.0,
           ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              "Status",
-              style: TextStyle(
-                fontSize: 15,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Status",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
               ),
-            ),
-            Text(
-              report.status,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.blue[300],
+              Text(
+                report.status,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue[300],
+                ),
               ),
-            ),
-          ]),
+            ],
+          ),
           SizedBox(
             height: 8.0,
           ),
-          ElevatedButton(
-            onPressed: () => showAlertDialog(context),
-            child: Text("change Status"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: () => showAlertDialog(context),
+                child: Text("change Status"),
+              ),
+              IconButton(
+                  onPressed: () {
+                    print("delete Report");
+                  },
+                  icon: Icon(
+                    Icons.delete_forever,
+                    color: Colors.red,
+                  ))
+            ],
           ),
           SizedBox(
             height: 10.0,
