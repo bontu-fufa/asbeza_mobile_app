@@ -1,4 +1,4 @@
-# Asbeza Mobile App
+# Asbeza Tracking App
 
 <i> This project is done with the flutter framework for Advanced Mobile Programming course. </i>
 
