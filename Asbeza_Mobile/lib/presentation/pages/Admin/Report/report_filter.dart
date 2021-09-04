@@ -1,20 +1,12 @@
 import 'package:asbeza_mobile_app/models/reports_model.dart';
 import 'package:flutter/material.dart';
 
+//to be deleted
 void main() {
   runApp(
     MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {},
-          ),
-          // leading: BackButton(color: Colors.white),
-          centerTitle: true,
-          title: const Text('Reports')),
-      body: ReportFilter(),
-    )),
+      home: ReportFilter(),
+    ),
   );
 }
 
@@ -71,16 +63,26 @@ class _ReportFilterState extends State<ReportFilter> {
     ];
     var reportList = _build_report(reports, context);
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _build_fiters_tab(),
-            ...reportList,
-          ],
+    return Scaffold(
+      appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {},
+          ),
+          // leading: BackButton(color: Colors.white),
+          centerTitle: true,
+          title: const Text('Reports')),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+        width: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _build_fiters_tab(),
+              ...reportList,
+            ],
+          ),
         ),
       ),
     );
@@ -100,7 +102,8 @@ _build_fiters_tab() {
             const Icon(
               Icons.filter_alt_outlined,
             ),
-            Row(
+            Wrap(
+              direction: Axis.vertical,
               children: [
                 TextButton(
                     onPressed: () {
