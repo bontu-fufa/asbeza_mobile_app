@@ -18,5 +18,5 @@ ma = Marshmallow(app)
 def init_db_command():
     db.create_all()
 
-from . import asbeza_app
-app.register_blueprint(asbeza_app.bp)
+# from . import asbeza_app
+# app.register_blueprint(asbeza_app.bp)
