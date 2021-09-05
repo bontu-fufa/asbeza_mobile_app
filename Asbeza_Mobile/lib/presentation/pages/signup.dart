@@ -1,3 +1,4 @@
+import 'package:asbeza_mobile_app/presentation/pages/login.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -63,10 +64,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
                   controller: passwordController,
-                  obscureText: hidePassword? true: false,
+                  obscureText: hidePassword ? true : false,
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: InputDecoration(
@@ -78,7 +81,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             hidePassword = !hidePassword;
                           });
                         },
-                        child: hidePassword? Icon(Icons.visibility_off): Icon(Icons.visibility),
+                        child: hidePassword
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
                       ),
                     ),
                     hintText: "Password",
@@ -102,7 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 TextFormField(
                   controller: confirmPasswordController,
-                  obscureText: hidePassword? true: false,
+                  obscureText: hidePassword ? true : false,
                   enableSuggestions: false,
                   autocorrect: false,
                   decoration: InputDecoration(
@@ -114,7 +119,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             hidePassword = !hidePassword;
                           });
                         },
-                        child: hidePassword? Icon(Icons.visibility_off): Icon(Icons.visibility),
+                        child: hidePassword
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
                       ),
                     ),
                     hintText: "Confirm Password",
@@ -133,7 +140,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 GestureDetector(
                   onTap: () {
                     // run validations.
@@ -163,12 +172,16 @@ class _SignupScreenState extends State<SignupScreen> {
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(100.0),
                     ),
-                    child: Text(
-                      "Signup",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
+                    child: FlatButton(
+                      child: Text('sign up'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return LoginScreen();
+                          }),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -182,10 +195,17 @@ class _SignupScreenState extends State<SignupScreen> {
                     SizedBox(
                       width: 6,
                     ),
-                    Text(
-                      "Login",
-                      style: TextStyle(color: Colors.blue[400]),
-                    )
+                    FlatButton(
+                      child: Text('Login'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return LoginScreen();
+                          }),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ],

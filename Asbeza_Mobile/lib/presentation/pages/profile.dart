@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(
-  home:ProfileApp(),
-));
 
-class ProfileApp extends StatelessWidget {
+class ProfileApp extends StatefulWidget {
+  @override
+  _ProfileAppState createState() => _ProfileAppState();
+}
+
+class _ProfileAppState extends State<ProfileApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class ProfileApp extends StatelessWidget {
                   children: <Widget>[
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                        "https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg",
                       ),
                       radius: 50.0,
                     ),

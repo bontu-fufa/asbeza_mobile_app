@@ -1,3 +1,5 @@
+import 'package:asbeza_mobile_app/presentation/pages/signup.dart';
+import 'package:asbeza_mobile_app/presentation/pages/todo.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -89,13 +91,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(100.0),
                     ),
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                      ),
-                    ),
+                   child: FlatButton(
+          child: Text('Login'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return TodoScreen();
+              }),
+            );
+          },
+        ),
                   ),
                 ),
                 SizedBox(
@@ -108,10 +114,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: 6,
                     ),
-                    Text(
-                      "Signup",
-                      style: TextStyle(color: Colors.blue[400]),
-                    )
+                   FlatButton(
+          child: Text('sign up'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return SignupScreen();
+              }),
+            );
+          },
+        ),
                   ],
                 ),
               ],
