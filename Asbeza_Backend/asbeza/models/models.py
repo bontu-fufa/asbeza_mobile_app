@@ -29,8 +29,8 @@ class User(db.Model):
 
     user_reports = db.relationship('Report', backref='users', lazy=True)
 
-    purchased_items = db.relationship('Item', secondary=purchasedGoods, lazy='subquery',backref=db.backref('users', lazy=True))
-    liked_Reports = db.relationship('Report', secondary=likedReports, lazy='subquery',backref=db.backref('users', lazy=True))
+    purchased_items = db.relationship('Item', secondary=purchasedGoods, lazy='subquery',backref=db.backref('users_purchase', lazy=True))
+    liked_Reports = db.relationship('Report', secondary=likedReports, lazy='subquery',backref=db.backref('users_liked_reports', lazy=True))
     
     def __init__(self, data):
         self.name = data.get('name')
