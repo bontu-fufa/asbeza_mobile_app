@@ -32,11 +32,11 @@ class User(db.Model):
     purchased_items = db.relationship('Item', secondary=purchasedGoods, lazy='subquery',backref=db.backref('users_purchase', lazy=True))
     liked_Reports = db.relationship('Report', secondary=likedReports, lazy='subquery',backref=db.backref('users_liked_reports', lazy=True))
     
-    def __init__(self, data):
-        self.name = data.get('name')
-        self.email = data.get('email')
-        self.password = data.get('password')
-        self.user_type = data.get('user_type')
+    def __init__(self):
+        # self.name = data.get('name')
+        # self.email = data.get('email')
+        # self.password = data.get('password')
+        # self.user_type = data.get('user_type')
         self.created_at = datetime.datetime.now()
         self.modified_at = datetime.datetime.now()
     def save(self):
