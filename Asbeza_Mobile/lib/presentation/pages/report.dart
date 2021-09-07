@@ -67,11 +67,7 @@ class _SendReportState extends State<SendReport> {
                   )
                 ],
               ),
-            )
-
-            ));
-  }
-}));
+            )));
   }
 }
 
