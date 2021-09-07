@@ -68,3 +68,18 @@ class userResourceWithID(Resource):
             return "User Not Found", 404
         return user_schema.dump(user)
 
+@userNamespace.route('/login')
+class userResourceLogin(Resource):
+
+    @api.expect(user)
+    def post(self):
+        """
+        Search for user
+        """
+        name = request.json['user_name']
+        password = request.json['password'] 
+        result = User.query.filter_by(name=name).first()
+        if result:
+            if result.password == password:
+                return {"message":"logged in", "currentUserId": result.id, "currentUserName": result.name, "currentUserEmail": result.email, "currentUserType": result.user_type}
+        return {"message":"not logged in"} 
