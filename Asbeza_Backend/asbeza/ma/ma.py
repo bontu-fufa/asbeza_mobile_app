@@ -7,6 +7,6 @@ ma = Marshmallow()
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ("name", "email", "password", "typeOfUser")
+        fields = ("name", "email", "password", "user_type")
 
         model = models.User
