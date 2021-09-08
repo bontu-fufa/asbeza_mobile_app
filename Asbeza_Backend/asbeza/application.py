@@ -208,6 +208,16 @@ class reportResource(Resource):
 @reportNamespace.route("/<int:report_id>")
 class reportResourceWithID(Resource):
 
+    def get(self, id, report_id):
+        """
+        Get report with id of report_id
+        """
+        report = Report.get_one_report(report_id)
+        if not report:
+            return "Report not found", 404
+        
+        return report_schema.dump(report)
+
     def delete(self, id, report_id):
         """
         Delete a report with id of report_id
@@ -218,7 +228,7 @@ class reportResourceWithID(Resource):
         db.session.commit()
       
         return report_schema.dump(report)
-        
+
 
     @api.expect(report)
     def put(self, id, report_id):
@@ -233,7 +243,23 @@ class reportResourceWithID(Resource):
             report.description = request.json['description']
         if request.json.get('status'):
             report.status = request.json['status']
-        if request.json.get('like_counts'):
+        
+        if str(request.json.get('like_counts')):
+            likeCount = report.like_counts
+            newLikeCount = request.json['like_counts']
+            if newLikeCount == likeCount + 1:
+                print(type(newLikeCount))
+                params = {"user_id": id, "report_id": report_id}
+                statement = """insert into likedReports(user_id, report_id) values(:user_id, :report_id)"""
+                db.session.execute(statement, params)
+                db.session.commit()
+
+            if newLikeCount == likeCount - 1:
+                print(type(newLikeCount))
+                params = {"user_id": id, "report_id": report_id}
+                statement = """delete from likedReports where user_id=:user_id AND report_id=:report_id"""
+                db.session.execute(statement, params)
+                db.session.commit()
             report.like_counts = request.json['like_counts']
 
         report.reporter_id = id
