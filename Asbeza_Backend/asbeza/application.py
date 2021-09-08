@@ -143,6 +143,38 @@ class itemResourceWithID(Resource):
         if not item:
             return "Item Not Found", 404
         return item_schema.dump(item)
+
+    def put(self, id):
+        """
+        Updates an item
+        """
+        item = Item.query.filter_by(id=id).first()
+
+        if not item:
+            return "Item Not Found", 404
+
+        json = request.get_json(force=True)
+        item.name = json["name"]
+        item.min_price = json["min_price"]
+        item.max_price= json["max_price"]
+
+        item.save()
+
+        return item_schema.dump(item)
+
+    def delete(self,id):
+
+        item = Item.query.filter_by(id=id).first()
+
+        params = {"id": id}
+        statement = """DELETE  from items WHERE id =:id"""
+                
+                
+        db.session.execute(statement, params)
+        db.session.commit()
+
+        return {"message" : "Item successfully deleted"},
+
  
 @reportNamespace.route("")
 class reportResource(Resource):
