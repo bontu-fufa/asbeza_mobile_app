@@ -4,7 +4,8 @@ import datetime
 # relationship tables
 purchasedGoods = db.Table('purchasedGoods',
    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-   db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True)
+   db.Column('item_id', db.Integer, db.ForeignKey('items.id'), primary_key=True),
+   db.Column('is_purchased',db.Boolean)
 )
 
 likedReports = db.Table('likedReports',
