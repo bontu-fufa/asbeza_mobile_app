@@ -16,3 +16,9 @@ class ItemSchema(ma.Schema):
         fields = ("name", "min_price", "max_price")
 
         model = models.Item
+        
+class ReportSchema(ma.Schema):
+    class Meta:
+        fields = ("location", "description", "status", "like_counts", "reporter_id", "item_id")
+        
+        model = models.Report
