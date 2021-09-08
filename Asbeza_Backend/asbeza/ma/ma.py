@@ -10,3 +10,9 @@ class UserSchema(ma.Schema):
         fields = ("name", "email", "password", "user_type")
 
         model = models.User
+
+class ItemSchema(ma.Schema):
+    class Meta:
+        fields = ("name", "min_price", "max_price")
+
+        model = models.Item

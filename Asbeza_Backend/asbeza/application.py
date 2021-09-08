@@ -17,6 +17,8 @@ api=Api(bp, version='1.0', title = 'Asbeza API', description = 'Asbeza Tracker A
 user_schema = ma.UserSchema()
 users_schema = ma.UserSchema(many=True)
 
+item_schema = ma.ItemSchema()
+items_schema = ma.ItemSchema(many=True)
 
 user = api.model("User",{
     'user_name' : fields.String,
@@ -24,10 +26,17 @@ user = api.model("User",{
     'password': fields.String,
 })
 
+item = api.model("Item",{
+    'name' : fields.String,
+    'min_price': fields.String,
+    'max_price': fields.String,
+})
+
 
 
 #NAMESPACE
 userNamespace = api.namespace("Asbeza", path="/users")
+itemNamespace = api.namespace("Asbeza", path="/items")
 
 @userNamespace.route("")
 class userResource(Resource):
@@ -83,3 +92,43 @@ class userResourceLogin(Resource):
             if result.password == password:
                 return {"message":"logged in", "currentUserId": result.id, "currentUserName": result.name, "currentUserEmail": result.email, "currentUserType": result.user_type}
         return {"message":"not logged in"} 
+
+
+
+@itemNamespace.route("")
+class itemResource(Resource):
+
+    def get(self):
+        """
+        Get all the Items
+        """
+      
+        return items_schema.dump(Item.get_all_items())
+        
+    @api.expect(item)
+    def post(self):
+        """
+        Create a new Item
+        """
+        new_item = Item()
+        new_item.name = request.json['name']
+        new_item.min_price = request.json['min_price']
+        new_item.max_price = request.json['max_price']
+
+        new_item.save()
+
+        return item_schema.dump(new_item)
+
+@itemNamespace.route('/<int:id>')
+class itemResourceWithID(Resource):
+
+    def get(self, id):
+        """
+        Get an Item
+        """
+        item =Item.get_one_item(id)
+
+        if not item:
+            return "Item Not Found", 404
+        return item_schema.dump(item)
+        
