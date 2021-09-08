@@ -20,6 +20,9 @@ users_schema = ma.UserSchema(many=True)
 item_schema = ma.ItemSchema()
 items_schema = ma.ItemSchema(many=True)
 
+report_schema = ma.ReportSchema()
+reports_schema = ma.ReportSchema(many=True)
+
 user = api.model("User",{
     'user_name' : fields.String,
     'email': fields.String,
@@ -32,11 +35,20 @@ item = api.model("Item",{
     'max_price': fields.String,
 })
 
+report = api.model("Report",{
+    'location' : fields.String,
+    'description': fields.String,
+    'status': fields.String,
+    'like_counts': fields.Integer,
+    'reporter_id': fields.Integer,
+    'item_id': fields.Integer,
+})
 
 
 #NAMESPACE
 userNamespace = api.namespace("Asbeza", path="/users")
 itemNamespace = api.namespace("Asbeza", path="/items")
+reportNamespace = api.namespace("Asbeza", path="/users/<int:id>/reports")
 
 @userNamespace.route("")
 class userResource(Resource):
@@ -131,4 +143,69 @@ class itemResourceWithID(Resource):
         if not item:
             return "Item Not Found", 404
         return item_schema.dump(item)
+ 
+@reportNamespace.route("")
+class reportResource(Resource):
+
+    def get(self, id):
+        """
+        Get all the reports
+        """
+      
+        return reports_schema.dump(Report.get_all_reports())
         
+
+    @api.expect(report)
+    def post(self, id):
+        """
+        Create a new report
+        """
+        new_report = Report()
+        new_report.location = request.json['location']
+        new_report.description = request.json['description']
+        new_report.status = "pending"
+        new_report.like_counts = 0
+        new_report.reporter_id = id
+        new_report.item_id=request.json['item_id']
+
+        new_report.save()
+
+        return report_schema.dump(new_report)
+
+
+@reportNamespace.route("/<int:report_id>")
+class reportResourceWithID(Resource):
+
+    def delete(self, id, report_id):
+        """
+        Delete a report with id of report_id
+        """
+
+        report = Report.get_one_report(report_id)
+        report.delete()
+        db.session.commit()
+      
+        return report_schema.dump(report)
+        
+
+    @api.expect(report)
+    def put(self, id, report_id):
+        """
+        Update a report with id of report_id
+        """
+        print(request.json)
+        report = Report.get_one_report(report_id)
+        if request.json.get('location'):
+            report.location = request.json['location']
+        if request.json.get('description'):
+            report.description = request.json['description']
+        if request.json.get('status'):
+            report.status = request.json['status']
+        if request.json.get('like_counts'):
+            report.like_counts = request.json['like_counts']
+
+        report.reporter_id = id
+
+        report.save()
+
+        return report_schema.dump(report)
