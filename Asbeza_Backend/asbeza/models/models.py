@@ -110,7 +110,7 @@ class Report(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String(100),  nullable=False)    
     description = db.Column(db.Text,  nullable=False)    
-    status = db.Column(db.String(80), nullable=False)    
+    status = db.Column(db.String(80), nullable=False, )    
     like_counts = db.Column(db.Integer, nullable=False)    
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
@@ -120,12 +120,13 @@ class Report(db.Model):
     reporter_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 
-    def __init__(self, data):
-        self.name = data.get('name')
-        self.location = data.get('location')
-        self.description = data.get('description')
-        self.status = data.get('status')
-        self.like_counts = data.get("like_counts")
+    def __init__(self):
+        # self.name = data.get('name')
+        # self.location = data.get('location')
+        # self.description = data.get('description')
+        # self.status = data.get('status')
+        # self.like_counts = data.get("like_counts")
+        self.status = "pending"
         self.created_at = datetime.datetime.now()
         self.modified_at = datetime.datetime.now()
 
