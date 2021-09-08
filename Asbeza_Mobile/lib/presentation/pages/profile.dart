@@ -1,6 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileApp extends StatelessWidget {
+Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+Future getFromSession() async {
+  final SharedPreferences prefs = await _prefs;
+  return prefs;
+}
+
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<String> _user_name;
+
+  @override
+  void initState() {
+    super.initState();
+    _user_name = _prefs.then((SharedPreferences prefs) {
+      return (prefs.getString('user_name') ?? "");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +34,7 @@ class ProfileApp extends StatelessWidget {
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.white, Colors.blueAccent])),
+                      colors: [Colors.blueAccent, Colors.blueAccent])),
               child: Container(
                 width: double.infinity,
                 height: 350.0,
@@ -20,21 +43,35 @@ class ProfileApp extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-                        ),
-                        radius: 50.0,
-                      ),
+                      // CircleAvatar(
+                      //   backgroundImage: NetworkImage(
+                      //     "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                      //   ),
+                      //   radius: 50.0,
+                      // ),
                       SizedBox(
                         height: 10.0,
                       ),
-                      Text(
-                        "JHON DOE",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.white,
-                        ),
+                      FutureBuilder(
+                        future: _user_name,
+                        builder: (ctx, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return const CircularProgressIndicator();
+                            default:
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return Text(
+                                  "${snapshot.data}",
+                                  style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }
+                          }
+                        },
                       ),
                       SizedBox(
                         height: 10.0,
@@ -70,7 +107,7 @@ class ProfileApp extends StatelessWidget {
                                         fontSize: 20.0,
                                         color: Colors.blueAccent,
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
