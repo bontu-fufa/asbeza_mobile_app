@@ -72,10 +72,10 @@ class Item(db.Model):
     item_report = db.relationship('Report', backref='item', lazy=True, uselist=False)
 
 
-    def __init__(self, data):
-        self.name = data.get('name')
-        self.min_price = data.get('min_price')
-        self.max_price = data.get('max_price')
+    def __init__(self):
+        # self.name = data.get('name')
+        # self.min_price = data.get('min_price')
+        # self.max_price = data.get('max_price')
         self.created_at = datetime.datetime.now()
         self.modified_at = datetime.datetime.now()
 
