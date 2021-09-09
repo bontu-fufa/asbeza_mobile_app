@@ -1,5 +1,9 @@
+import 'package:asbeza_mobile_app/auth/data_providers/auth-data-provider.dart';
+import 'package:asbeza_mobile_app/auth/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'auth/models/new_user_model.dart';
 
 
 
@@ -28,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Scaffold()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
     });
   }
 
@@ -55,10 +59,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final authDataProvider = AuthDataProvider();
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    // authDataProvider.create(NewUser(name: "Jill Doe", email: "jill@gmail.com", password: "jill"))
+    // .then((value) {
+    //   print(value);
+    // });
 
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          child: Text("Click me"),
+          onPressed: () {
+            // authDataProvider.create(NewUser(name: "Jill Doe", email: "jill@gmail.com", password: "jill"))
+            // .then((value) {
+            //   print(value);
+            // });
+
+            authDataProvider.fetchByName(User(name: "Jill Doe", password: "jill"))
+            .then((value) {
+              print(value);
+            });
+          },
+        ),
+      ),
     );
   }
 }
