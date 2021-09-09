@@ -4,7 +4,7 @@ import 'package:asbeza_mobile_app/auth/models/user_model.dart';
 
 class AuthRepository {
   final AuthDataProvider dataProvider;
-  AuthRepository(this.dataProvider);
+  AuthRepository({required this.dataProvider});
 
   Future<NewUser> create(NewUser newUser) async {
     return this.dataProvider.create(newUser);

@@ -12,22 +12,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     if (event is LoginEvent) {
-      final name = event.name;
-      final password = event.password;
-      final user = User(name: name, password: password);
+      final user = event.user;
 
       yield LoginInProgress();
       
       // check name and password
-      authRepository.fetchByName(user);
+      final userInfo = await authRepository.fetchByName(user);
+      if (userInfo['message'] == 'logged in') {
+        print("Logged in successfully");
+        yield LoggedIn();
+      } else {
+        print("Logging in not successful");
+        yield AuthFailed(errorMsg: "Account does not exist.");
+      }
     } 
 
     if (event is SignupEvent) {
-      final name = event.name;
-      final email = event.email;
-      final password = event.password;
+      final newUser = event.newUser;
 
-      yield 
+      yield SignupInProgress();
+
+      // insert into db
+      try {
+        final userInfo = await authRepository.create(newUser);
+        yield SignedUp();
+      } catch (_) {
+        yield AuthFailed(errorMsg: "Account exists. Login or change username and/or email.");
+      }
     }
     
   }

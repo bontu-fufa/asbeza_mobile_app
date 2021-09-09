@@ -10,4 +10,8 @@ class SignupInProgress extends AuthState {}
 
 class SignedUp extends AuthState {}
 
-class AuthFailed extends AuthState {}
+class AuthFailed extends AuthState {
+  final errorMsg;
+
+  AuthFailed({required this.errorMsg});
+}
