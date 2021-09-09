@@ -1,4 +1,3 @@
-
 class User {
   final String name;
   final String password;
@@ -7,7 +6,9 @@ class User {
 
   factory User.fromJson(Map json) {
     return User(
-        name: json['user_name'] ?? "", password: json['password'] ?? "");
+      name: json['user_name'] ?? "",
+      password: json['password'] ?? "",
+    );
   }
 
   Map<String, String> toMap() {

@@ -1,5 +1,8 @@
-import 'package:asbeza_mobile_app/models/new_user_model.dart';
+import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
+import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
+import 'package:asbeza_mobile_app/auth/models/new_user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -181,52 +184,71 @@ class _SignupScreenState extends State<SignupScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      // run validations
-                      final valid = formKey.currentState!.validate();
-                      if (!valid) {
-                        // do something here.
-                        print("something failed");
-                        return;
+                  BlocConsumer<AuthBloc, AuthState>(
+                    listener: (ctx, authState) {
+                      if (authState is AuthFailed) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('${authState.errorMsg}')));
                       }
 
-                      final username = usernameController.text;
-                      final email = emailController.text;
-                      final password = passwordController.text;
-
-                      // Get input and add user to db via api
-                      NewUser newUser = NewUser(
-                        name: username,
-                        email: email,
-                        password: password,
-                      );
-                      addNewUser(newUser.toMap()).then((value) {
-                        if (value['name'] != null) {
-                          // TODO: navigate to home page
-                          print("User signed up successfully");
-                        } else {
-                          // TODO: display error message
-                          print("User not signed up");
-                        }
-                      });
+                      if (authState is SignedUp) {
+                        // TODO: navigate to home page
+                        print("Signed up");
+                      }
                     },
-                    child: Container(
-                      height: 60.0,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                      child: Text(
-                        "Signup",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
+                    builder: (ctx, authState) {
+                      Widget buttonChild = Text("Signup",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ));
+
+                      if (authState is SignupInProgress) {
+                        buttonChild = SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        );
+                      }
+
+                      return GestureDetector(
+                        onTap: () {
+                          // run validations
+                          final valid = formKey.currentState!.validate();
+                          if (!valid) {
+                            // do something here.
+                            print("something failed");
+                            return;
+                          }
+
+                          final username = usernameController.text;
+                          final email = emailController.text;
+                          final password = passwordController.text;
+
+                          // Get input and add user to db via api
+                          NewUser newUser = NewUser(
+                            name: username,
+                            email: email,
+                            password: password,
+                          );
+
+                          BlocProvider.of<AuthBloc>(context).add(SignupEvent(newUser: newUser));
+                          
+                        },
+                        child: Container(
+                          height: 60.0,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(100.0),
+                          ),
+                          child: buttonChild,
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 25,
