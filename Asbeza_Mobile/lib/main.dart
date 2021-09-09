@@ -1,18 +1,29 @@
+import 'package:asbeza_mobile_app/auth/data_providers/auth-data-provider.dart';
+import 'package:asbeza_mobile_app/auth/models/user_model.dart';
+import 'package:asbeza_mobile_app/auth/repository/auth-repository.dart';
+import 'package:asbeza_mobile_app/auth/screens/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
 import 'dart:async';
-
-
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final AuthRepository authRepository = AuthRepository(dataProvider: AuthDataProvider());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen(),
-      debugShowCheckedModeBanner: false,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (ctx) => AuthBloc(authRepository: authRepository)),
+      ],
+      child: MaterialApp(
+        home: SplashScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
@@ -28,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Scaffold()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => SignupScreen()));
     });
   }
 
@@ -45,20 +56,6 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-
     );
   }
 }
