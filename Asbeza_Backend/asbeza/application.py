@@ -4,6 +4,7 @@ import werkzeug
 werkzeug.cached_property = werkzeug.utils.cached_property
 from marshmallow import fields
 import jwt
+from functools import wraps
 
 
 
@@ -14,6 +15,29 @@ from asbeza.models.models import *
 bp = Blueprint('application', __name__, url_prefix='/asbeza/api/v1')
 api=Api(bp, version='1.0', title = 'Asbeza API', description = 'Asbeza Tracker API' )
 
+
+
+# AUTH DECORATION
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+
+        if not token:
+            return jsonify({'message' : 'Token is missing!'}), 401
+
+        try: 
+            data = jwt.decode(token, "99999525410sdf")
+            current_user = User.get_one_user(data['currentUserId'])
+        except:
+            return jsonify({'message' : 'Token is invalid!'}), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
 
 
 @bp.route('/login')
