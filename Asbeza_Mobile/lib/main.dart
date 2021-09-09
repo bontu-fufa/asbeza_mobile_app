@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: SplashScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -34,16 +35,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green[700],
+      backgroundColor: Colors.blue[700],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
        
-            Image.asset(
-              'images/logoo.png',
-              height: 120,
-            ),
+            Text("Asbeza Tracking App", style: TextStyle(fontSize: 35, color: Colors.white),)
           ],
         ),
       ),
