@@ -99,8 +99,7 @@ def sign_up():
 
 # USER Routes
 @bp.route("/users",methods=['GET'])
-@token_required
-def get_all_users(current_user):
+def get_all_users():
     """
     Get all the Users
     """
@@ -155,10 +154,10 @@ def delete_user(current_user, id):
     db.session.commit()
 
     return jsonify({'message' : 'The user has been deleted!'})
+# /USER
 
 
 
-# todo current user reports 
 
 # ITEM Routes
 @bp.route('/items', methods=['GET'])
@@ -229,9 +228,11 @@ def delete_item(current_user,id):
     db.session.commit()
 
     return jsonify({'message' : 'The item has been deleted!'})
+# /ITEMS
+
 
 # REPORT Routes
-@bp.route('/reports', methods=['GET'])
+@bp.route('/reports/all', methods=['GET'])
 @token_required
 def get_all_report(current_user):
     """
@@ -247,7 +248,6 @@ def create_report(current_user):
     """
     Create a new report
     """
-    print("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt")
     print(current_user)
     new_report = Report()
     new_report.location = request.json['location']
@@ -330,6 +330,139 @@ def delete_report(current_user,id):
     db.session.commit()
 
     return jsonify({'message' : 'The report has been deleted!'})
+
+# todo current user reports 
+@bp.route('/reports', methods=['GET'])
+@token_required
+def get_all_current_user_reports(current_user):
+    """
+    Get all the reports
+    """
+    # print('-----------------------------\n')
+    # print(current_user.id)
+    params = {"user_id": current_user.id}
+    statement = """select * from reports where reporter_id=:user_id"""
+    reports = db.session.execute(statement, params).all()
+    
+    reports_list = []
+    for report in reports:
+        report_json = {
+            "reporter_id": report.reporter_id,
+            "item_id": report.item_id,
+            "location": report.location,
+            "description": report.description,
+            "status": report.status,
+            "like_counts": report.like_counts,
+            "created_at": report.created_at,
+            "modified_at": report.modified_at
+        }
+        reports_list.append(report_json)
+    
+    return jsonify(reports_list)
+
+    
+
+#  /REPORTS
  
 
 # PURCHASE Routes
+@bp.route('/purchases', methods=['GET'])
+@token_required
+def get_all_tobe_purchased_or_purchased_goods(current_user):
+    u_id = current_user.id
+    params = {"user_id": u_id}
+
+    statement = """select * from purchasedGoods where user_id=:user_id"""
+    purchases = db.session.execute(statement, params).all()
+
+    purchases_list = []
+    for purchase in purchases:
+        purchase_json = {
+            "user_id": purchase.user_id,
+            "item_id": purchase.item_id,
+            "is_purchased": purchase.is_purchased
+        }
+        purchases_list.append(purchase_json)
+    
+    return jsonify(purchases_list)
+
+
+@bp.route('/purchases/<item_id>', methods=['GET'])
+@token_required
+def get_one_registered_item(current_user,item_id):
+    print('\n')
+    print(current_user.id)
+    u_id = current_user.id
+    params = {"user_id": u_id, "item_id": item_id}
+    statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    purchase = db.session.execute(statement, params).one()
+
+    if purchase:
+        return {"user_id" : u_id, "item_id": item_id, "is_purchased":purchase.is_purchased}
+    return {}
+ 
+@bp.route('/purchases/<item_id>', methods=['POST'])
+@token_required
+def add_item_tobe_purchased(current_user,item_id):
+
+    params = {"user_id": current_user.id, "item_id": item_id}
+    statement = """insert into purchasedGoods(user_id, item_id, is_purchased) values(:user_id, :item_id, false)"""
+    db.session.execute(statement, params)
+    db.session.commit()
+
+    statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    purchase = db.session.execute(statement, params).one()
+
+    purchase_json = {
+        "user_id": purchase.user_id,
+        "item_id": purchase.item_id,
+        "is_purchased": purchase.is_purchased
+    }
+
+    return jsonify(purchase_json)
+
+@bp.route('/purchases/<item_id>', methods=['PUT'])
+@token_required
+def update_is_purchased(current_user,item_id):
+
+    is_purchased = request.json["is_purchased"]
+    params = {"user_id": current_user.id, "item_id": item_id}
+
+    if is_purchased == True:
+        statement = """update purchasedGoods set is_purchased=true where user_id=:user_id and item_id=:item_id"""
+    else:
+        statement = """update purchasedGoods set is_purchased=false where user_id=:user_id and item_id=:item_id"""
+
+    db.session.execute(statement, params)
+    db.session.commit()
+
+    statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    purchase = db.session.execute(statement, params).one()
+
+    purchase_json = {
+        "user_id": purchase.user_id,
+        "item_id": purchase.item_id,
+        "is_purchased": purchase.is_purchased
+    }
+
+    return jsonify(purchase_json)
+
+@bp.route('/purchases/<item_id>', methods=['DELETE'])
+@token_required
+def delete_item_tobe_purchased(current_user,item_id):
+    params = {"user_id": current_user.id, "item_id": item_id}
+    statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    purchase = db.session.execute(statement, params).one()
+    
+    statement = """delete from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    db.session.execute(statement, params)
+    db.session.commit()
+
+    purchase_json = {
+        "user_id": purchase.user_id,
+        "item_id": purchase.item_id,
+        "is_purchased": purchase.is_purchased
+    }
+
+    return jsonify(purchase_json)
+# /PURCHASES
