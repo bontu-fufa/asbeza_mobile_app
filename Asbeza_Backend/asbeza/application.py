@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_restplus import Api, Resource
 import werkzeug
 werkzeug.cached_property = werkzeug.utils.cached_property
@@ -49,6 +49,7 @@ report = api.model("Report",{
 userNamespace = api.namespace("Asbeza", path="/users")
 itemNamespace = api.namespace("Asbeza", path="/items")
 reportNamespace = api.namespace("Asbeza", path="/users/<int:id>/reports")
+purchaseNamespace = api.namespace("Asbeza", path="/users/<int:id>/purchases")
 
 @userNamespace.route("")
 class userResource(Resource):
@@ -76,6 +77,7 @@ class userResource(Resource):
         new_user.save()
 
         return user_schema.dump(new_user)
+        
 @userNamespace.route('/<int:id>')
 class userResourceWithID(Resource):
 
@@ -267,3 +269,89 @@ class reportResourceWithID(Resource):
         report.save()
 
         return report_schema.dump(report)
+        
+@purchaseNamespace.route("")
+class purchaseResource(Resource):
+
+    def get(self, id):
+        params = {"user_id": id}
+        statement = """select * from purchasedGoods where user_id=:user_id"""
+        purchases = db.session.execute(statement, params).all()
+
+        purchases_list = []
+        for purchase in purchases:
+            purchase_json = {
+                "user_id": purchase.user_id,
+                "item_id": purchase.item_id,
+                "is_purchased": purchase.is_purchased
+            }
+            purchases_list.append(purchase_json)
+        
+        return jsonify(purchases_list)
+
+@purchaseNamespace.route("/<int:item_id>")
+class purchaseResourceWithID(Resource):
+
+    def get(self, id, item_id):
+        params = {"user_id": id, "item_id": item_id}
+        statement = """select * from purchasedGoods where user_id=:user_id AND item_id:item_id"""
+        purchase = db.session.execute(statement, params).one()
+
+        return purchase
+        
+    def post(self, id, item_id):
+        params = {"user_id": id, "item_id": item_id}
+        statement = """insert into purchasedGoods(user_id, item_id, is_purchased) values(:user_id, :item_id, false)"""
+        db.session.execute(statement, params)
+        db.session.commit()
+
+        statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+        purchase = db.session.execute(statement, params).one()
+
+        purchase_json = {
+            "user_id": purchase.user_id,
+            "item_id": purchase.item_id,
+            "is_purchased": purchase.is_purchased
+        }
+
+        return jsonify(purchase_json)
+
+    def put(self, id, item_id):
+        is_purchased = request.json["is_purchased"]
+        params = {"user_id": id, "item_id": item_id}
+
+        if is_purchased == True:
+            statement = """update purchasedGoods set is_purchased=true where user_id=:user_id and item_id=:item_id"""
+        else:
+            statement = """update purchasedGoods set is_purchased=false where user_id=:user_id and item_id=:item_id"""
+
+        db.session.execute(statement, params)
+        db.session.commit()
+
+        statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+        purchase = db.session.execute(statement, params).one()
+
+        purchase_json = {
+            "user_id": purchase.user_id,
+            "item_id": purchase.item_id,
+            "is_purchased": purchase.is_purchased
+        }
+
+        return jsonify(purchase_json)
+
+    def delete(self, id, item_id):
+        params = {"user_id": id, "item_id": item_id}
+        statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+        purchase = db.session.execute(statement, params).one()
+        
+        statement = """delete from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+        db.session.execute(statement, params)
+        db.session.commit()
+
+        purchase_json = {
+            "user_id": purchase.user_id,
+            "item_id": purchase.item_id,
+            "is_purchased": purchase.is_purchased
+        }
+
+        return jsonify(purchase_json)
