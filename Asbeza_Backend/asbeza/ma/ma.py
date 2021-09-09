@@ -7,18 +7,18 @@ ma = Marshmallow()
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ("name", "email", "password", "user_type")
+        fields = ("id","name", "email", "password", "user_type")
 
         model = models.User
 
 class ItemSchema(ma.Schema):
     class Meta:
-        fields = ("name", "min_price", "max_price")
+        fields = ("id","name", "min_price", "max_price")
 
         model = models.Item
         
 class ReportSchema(ma.Schema):
     class Meta:
-        fields = ("location", "description", "status", "like_counts", "reporter_id", "item_id")
+        fields = ("id","location", "description", "status", "like_counts", "reporter_id", "item_id")
         
         model = models.Report
