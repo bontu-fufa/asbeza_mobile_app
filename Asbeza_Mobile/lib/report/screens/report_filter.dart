@@ -1,4 +1,4 @@
-import 'package:asbeza_mobile_app/models/reports_model.dart';
+import 'package:asbeza_mobile_app/report/models/reports_model.dart';
 import 'package:flutter/material.dart';
 
 //to be deleted
