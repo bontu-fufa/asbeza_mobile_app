@@ -17,8 +17,6 @@ class PostItemPriceScreen extends StatefulWidget {
 
 class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
   final formKey = GlobalKey<FormState>();
-  final minPriceController = TextEditingController();
-  final maxPriceController = TextEditingController();
 
   final Map<String, dynamic> _item = {};
 
@@ -59,7 +57,6 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                 ),
                 TextFormField(
                   initialValue: widget.args.edit ? '${widget.args.item?.min_price}' : '',
-                  controller: minPriceController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Minimum Price Range",
@@ -71,6 +68,9 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                     ),
                   ),
                   validator: (String? minPrice) {
+                    if (minPrice == '') {
+                      return "Enter minimum price";
+                    }
                     final double minPriceDouble = double.parse(minPrice!);
                     if (minPriceDouble < 0) {
                       return "Price cannot be less than zero";
@@ -81,7 +81,7 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                   onSaved: (value) {
                     setState(() {
                       if (value != null) {
-                        this._item["min_price"] = int.parse(value);
+                        this._item["min_price"] = double.parse(value);
                       }
                     });
                   },
@@ -91,7 +91,6 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                 ),
                 TextFormField(
                   initialValue: widget.args.edit ? '${widget.args.item?.max_price}' : '',
-                  controller: maxPriceController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Maximum Price Range",
@@ -102,10 +101,21 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                       borderRadius: BorderRadius.circular(100.0),
                     ),
                   ),
+                  validator: (String? maxPrice) {
+                    if (maxPrice == '') {
+                      return "Enter maximum price";
+                    }
+                    final double maxPriceDouble = double.parse(maxPrice!);
+                    if (maxPriceDouble < 0) {
+                      return "Price cannot be less than zero";
+                    }
+
+                    return null;
+                  },
                   onSaved: (value) {
                     setState(() {
                       if (value != null) {
-                        this._item["max_price"] = int.parse(value);
+                        this._item["max_price"] = double.parse(value);
                       }
                     });
                   },
@@ -152,7 +162,7 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                       borderRadius: BorderRadius.circular(100.0),
                     ),
                     child: Text(
-                      "Add Item",
+                      widget.args.edit ? "Update Item" : "Add Item",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,

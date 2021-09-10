@@ -4,7 +4,10 @@ import 'package:asbeza_mobile_app/auth/repository/auth-repository.dart';
 import 'package:asbeza_mobile_app/auth/screens/signup.dart';
 import 'package:asbeza_mobile_app/item/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/item/data_providers/item-data-provider.dart';
+import 'package:asbeza_mobile_app/item/models/item_model.dart';
 import 'package:asbeza_mobile_app/item/repository/item-repository.dart';
+import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
+import 'package:asbeza_mobile_app/item/screens/item_route.dart';
 import 'package:asbeza_mobile_app/item/screens/items_list.dart';
 import 'package:asbeza_mobile_app/report/screens/report_filter.dart';
 import 'package:flutter/material.dart';
@@ -32,12 +35,14 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AuthBloc(authRepository: this.authRepository),
         ),
         BlocProvider(
-          create: (ctx) => ItemBloc(itemRepository: this.itemRepository)..add(ItemLoad()),
+          create: (ctx) =>
+              ItemBloc(itemRepository: this.itemRepository)..add(ItemLoad()),
         ),
       ],
       child: MaterialApp(
         home: SplashScreen(),
         debugShowCheckedModeBanner: false,
+        onGenerateRoute: ItemAppRoute.generateRoute,
       ),
     );
   }
@@ -53,8 +58,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 1), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => ItemList()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (_) => ItemList(),
+        // builder: (_) => PostItemPriceScreen(args: ItemArgument(edit: true, item: Item(id: 4, min_price: 5, max_price: 12, name: "Potato"))),
+      ));
     });
   }
 
