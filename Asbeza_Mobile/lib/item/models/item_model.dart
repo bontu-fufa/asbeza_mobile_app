@@ -1,8 +1,8 @@
 class Item{
   final int? id;
   final String name;
-  final int max_price;
-  final int min_price;
+  final double max_price;
+  final double min_price;
 
   Item({required this.id, required this.name, required this.max_price, required this.min_price});
 

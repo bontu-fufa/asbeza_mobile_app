@@ -1,6 +1,11 @@
 import 'package:asbeza_mobile_app/item/models/models.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class ItemEvent {}
+abstract class ItemEvent extends Equatable {
+
+  @override
+  List<Object?> get props => [];
+}
 
 class ItemLoad extends ItemEvent {}
 

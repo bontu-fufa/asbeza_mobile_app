@@ -10,12 +10,12 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   @override
   Stream<ItemState> mapEventToState(ItemEvent event) async* {
     if (event is ItemLoad) {
-      yield ItemLoading();
       try {
+        yield ItemLoading();
         final items = await itemRepository.fetchAll();
-        // print("ITEMS: $items");
         yield ItemOperationSuccess(items);
-      } catch (_) {
+      } catch (e) {
+        print("$e");
         yield ItemOperationFailure();
       }
     }
@@ -25,7 +25,8 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         await itemRepository.create(event.item);
         final items = await itemRepository.fetchAll();
         yield ItemOperationSuccess(items);
-      } catch (_) {
+      } catch (e) {
+        print("$e");
         yield ItemOperationFailure();
       }
     }
@@ -35,7 +36,8 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         await itemRepository.update(event.item.id ?? 0, event.item);
         final items = await itemRepository.fetchAll();
         yield ItemOperationSuccess(items);
-      } catch (_) {
+      } catch (e) {
+        print("$e");
         yield ItemOperationFailure();
       }
     }
@@ -45,7 +47,8 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
         await itemRepository.delete(event.id);
         final items = await itemRepository.fetchAll();
         yield ItemOperationSuccess(items);
-      } catch (_) {
+      } catch (e) {
+        print("$e");
         yield ItemOperationFailure();
       }
     }

@@ -43,6 +43,7 @@ class _ItemListState extends State<ItemList> {
                                 ),
                                 TextSpan(
                                   text: "${items.elementAt(index).max_price}",
+                                  style: TextStyle(color: Colors.black)
                                 ),
                               ],
                             ),
@@ -55,6 +56,7 @@ class _ItemListState extends State<ItemList> {
                                 ),
                                 TextSpan(
                                   text: "${items.elementAt(index).min_price}",
+                                  style: TextStyle(color: Colors.black)
                                 ),
                               ],
                             ),

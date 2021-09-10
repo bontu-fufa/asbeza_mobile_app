@@ -5,13 +5,13 @@ abstract class ItemState extends Equatable {
   const ItemState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ItemLoading extends ItemState {}
 
 class ItemOperationSuccess extends ItemState {
-  final Iterable<dynamic> items;
+  final List<dynamic> items;
 
   ItemOperationSuccess([this.items = const []]);
 
