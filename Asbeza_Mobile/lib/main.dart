@@ -1,18 +1,15 @@
 import 'package:asbeza_mobile_app/auth/data_providers/auth-data-provider.dart';
-import 'package:asbeza_mobile_app/auth/models/user_model.dart';
 import 'package:asbeza_mobile_app/auth/repository/auth-repository.dart';
-import 'package:asbeza_mobile_app/auth/screens/signup.dart';
+import 'package:asbeza_mobile_app/auth/screens/login.dart';
+import 'package:asbeza_mobile_app/auth/screens/profile.dart';
 import 'package:asbeza_mobile_app/item/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/item/data_providers/item-data-provider.dart';
-import 'package:asbeza_mobile_app/item/models/item_model.dart';
 import 'package:asbeza_mobile_app/item/repository/item-repository.dart';
-import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
-import 'package:asbeza_mobile_app/item/screens/item_route.dart';
-import 'package:asbeza_mobile_app/item/screens/items_list.dart';
-import 'package:asbeza_mobile_app/report/screens/report_filter.dart';
+import 'package:asbeza_mobile_app/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 import 'item/blocs/item_bloc.dart';
@@ -42,7 +39,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         home: SplashScreen(),
         debugShowCheckedModeBanner: false,
-        onGenerateRoute: ItemAppRoute.generateRoute,
+        onGenerateRoute: AsbezaAppRoute.generateRoute,
       ),
     );
   }
@@ -57,11 +54,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 1), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => ItemList(),
-        // builder: (_) => PostItemPriceScreen(args: ItemArgument(edit: true, item: Item(id: 4, min_price: 5, max_price: 12, name: "Potato"))),
-      ));
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    _prefs.then((value) {
+      if (value.containsKey("user_id")) {
+        Timer(Duration(seconds: 1), () {
+          Navigator.of(context).pushReplacementNamed(ProfileApp.routeName);
+        });
+      } else {
+        Timer(Duration(seconds: 1), () {
+          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+        });
+      }
     });
   }
 

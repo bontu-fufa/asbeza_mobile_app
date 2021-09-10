@@ -1,11 +1,12 @@
+import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
 import 'package:asbeza_mobile_app/item/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
-import 'package:asbeza_mobile_app/item/screens/item_route.dart';
+import 'package:asbeza_mobile_app/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemList extends StatefulWidget {
-  static const routeName = 'itemAddUpdate';
+  static const routeName = 'itemList';
   const ItemList({Key? key}) : super(key: key);
 
   @override
@@ -49,9 +50,13 @@ class _ItemListState extends State<ItemList> {
                           padding: const EdgeInsets.all(18.0),
                           child: Column(
                             children: [
-                              Text(
-                                "${items.elementAt(index).name}",
-                                style: TextStyle(fontSize: 24),
+                              BlocBuilder<ItemBloc, ItemState>(
+                                builder: (ctx, itemState) {
+                                  return Text(
+                                    "${items.elementAt(index).name}",
+                                    style: TextStyle(fontSize: 24),
+                                  );
+                                },
                               ),
                               SizedBox(
                                 height: 20,

@@ -20,17 +20,21 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-
-        if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+        
+        print(request.headers)
+        
+        if 'X-Access-Token' in request.headers:
+            token = request.headers['X-Access-Token']
 
         if not token:
+            print("no token!")
             return jsonify({'message' : 'Token is missing!'}), 401
 
         try: 
             data = jwt.decode(token, "99999525410sdf")
             current_user = User.get_one_user(data['currentUserId'])
         except:
+            print("token invalid!")
             return jsonify({'message' : 'Token is invalid!'}), 401
 
         return f(current_user, *args, **kwargs)
@@ -89,7 +93,7 @@ def sign_up():
     new_user.name = request.json['user_name']
     new_user.email = request.json['email']
     new_user.password = request.json['password']
-    new_user.user_type = 'normal'
+    new_user.user_type = 'user'
 
     new_user.save()
 

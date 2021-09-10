@@ -10,19 +10,15 @@ class AuthRepository {
     return this.dataProvider.create(newUser);
   }
 
-  // Future<Course> update(int id, Course course) async {
-  //   return this.dataProvider.update(id, course);
-  // }
-
-  // Future<List<Course>> fetchAll() async {
-  //   return this.dataProvider.fetchAll();
-  // }
-
   Future<dynamic> fetchByName(User user){
     return this.dataProvider.fetchByName(user);
   }
 
-  // Future<void> delete(int id) async {
-  //   this.dataProvider.delete(id);
-  // }
+  Future<dynamic> update(int id, NewUser user) async {
+    return this.dataProvider.update(id, user);
+  }
+
+  Future delete(int id) async {
+    return this.dataProvider.delete(id);
+  }
 }
