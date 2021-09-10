@@ -99,11 +99,12 @@ def sign_up():
 
 # USER Routes
 @bp.route("/users",methods=['GET'])
+# @token_required
 def get_all_users():
     """
     Get all the Users
     """
-    return jsonify({'users' : users_schema.dump(User.get_all_users())})
+    return jsonify(users_schema.dump(User.get_all_users()))
 
 @bp.route('/users/<id>', methods=['GET'])
 @token_required
@@ -167,7 +168,7 @@ def get_all_item(current_user):
     Get all items
 
     """
-    return jsonify({'items' : items_schema.dump(Item.get_all_items())})
+    return jsonify(items_schema.dump(Item.get_all_items()))
 
 @bp.route('/items', methods=['POST'])
 @token_required
@@ -208,9 +209,12 @@ def update_item(current_user,id):
         return "Item Not Found", 404
 
     json = request.get_json(force=True)
-    item.name = json["name"]
-    item.min_price = json["min_price"]
-    item.max_price= json["max_price"]
+    if request.json.get('name'):
+        item.name = json["name"]
+    if str(request.json.get('min_price')):
+        item.min_price = json["min_price"]
+    if str(request.json.get('max_price')):
+        item.max_price= json["max_price"]
 
     item.save()
 
@@ -238,8 +242,9 @@ def get_all_report(current_user):
     """
     Get all the reports
     """
+    reports = Report.get_all_reports()
     
-    return jsonify({"reports":reports_schema.dump(Report.get_all_reports())})
+    return jsonify(reports_schema.dump(reports))
     
 
 @bp.route('/reports', methods=['POST'])
@@ -299,20 +304,20 @@ def update_report(current_user,id):
         newLikeCount = request.json['like_counts']
         if newLikeCount == likeCount + 1:
             print(type(newLikeCount))
-            params = {"user_id": id, "report_id": id}
+            params = {"user_id": current_user.id, "report_id": id}
             statement = """insert into likedReports(user_id, report_id) values(:user_id, :report_id)"""
             db.session.execute(statement, params)
             db.session.commit()
 
         if newLikeCount == likeCount - 1:
             print(type(newLikeCount))
-            params = {"user_id": id, "report_id": id}
+            params = {"user_id": current_user.id, "report_id": id}
             statement = """delete from likedReports where user_id=:user_id AND report_id=:report_id"""
             db.session.execute(statement, params)
             db.session.commit()
         report.like_counts = request.json['like_counts']
 
-    report.reporter_id = id
+    report.reporter_id = current_user.id
 
     report.save()
 
@@ -354,7 +359,8 @@ def get_all_current_user_reports(current_user):
             "status": report.status,
             "like_counts": report.like_counts,
             "created_at": report.created_at,
-            "modified_at": report.modified_at
+            "modified_at": report.modified_at,
+            "id": report.id
         }
         reports_list.append(report_json)
     
