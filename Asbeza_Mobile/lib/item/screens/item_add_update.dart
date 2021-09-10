@@ -1,8 +1,15 @@
+import 'package:asbeza_mobile_app/item/blocs/blocs.dart';
+import 'package:asbeza_mobile_app/item/models/models.dart';
+import 'package:asbeza_mobile_app/item/screens/item_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostItemPriceScreen extends StatefulWidget {
-  const PostItemPriceScreen({Key? key}) : super(key: key);
+  static const routeName = 'itemAddUpdate';
+  final ItemArgument args;
+  
+  PostItemPriceScreen({required this.args});
 
   @override
   _PostItemPriceScreenState createState() => _PostItemPriceScreenState();
@@ -11,12 +18,15 @@ class PostItemPriceScreen extends StatefulWidget {
 class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
   final formKey = GlobalKey<FormState>();
   final minPriceController = TextEditingController();
+  final maxPriceController = TextEditingController();
+
+  final Map<String, dynamic> _item = {};
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add New Item"),
+        title: Text('${widget.args.edit ? "Update Item" : "Add New Item"}'),
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(10, 15, 10, 0),
@@ -26,6 +36,7 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
             child: Column(
               children: [
                 TextFormField(
+                  initialValue: widget.args.edit ? widget.args.item?.name : '',
                   decoration: InputDecoration(
                     hintText: "Name",
                     border: OutlineInputBorder(
@@ -35,11 +46,19 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                       borderRadius: BorderRadius.circular(100.0),
                     ),
                   ),
+                  onSaved: (value) {
+                    setState(() {
+                      if (value != null) {
+                        this._item["name"] = value;
+                      }
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextFormField(
+                  initialValue: widget.args.edit ? '${widget.args.item?.min_price}' : '',
                   controller: minPriceController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -59,11 +78,20 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
 
                     return null;
                   },
+                  onSaved: (value) {
+                    setState(() {
+                      if (value != null) {
+                        this._item["min_price"] = int.parse(value);
+                      }
+                    });
+                  },
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextFormField(
+                  initialValue: widget.args.edit ? '${widget.args.item?.max_price}' : '',
+                  controller: maxPriceController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Maximum Price Range",
@@ -74,17 +102,44 @@ class _PostItemPriceScreenState extends State<PostItemPriceScreen> {
                       borderRadius: BorderRadius.circular(100.0),
                     ),
                   ),
+                  onSaved: (value) {
+                    setState(() {
+                      if (value != null) {
+                        this._item["max_price"] = int.parse(value);
+                      }
+                    });
+                  },
                 ),
                 SizedBox(height: 30,),
                 GestureDetector(
                   onTap: () {
                     // run validations.
                     // form access.
+                    final form = formKey.currentState;
                     final valid = formKey.currentState!.validate();
                     if (!valid) {
                       // do something here.
                       print("something failed");
                       return;
+                    }
+                    if (form != null ) {
+                      form.save();
+                      final ItemEvent event = widget.args.edit ? 
+                      ItemUpdate(item: Item(
+                        id: widget.args.item?.id,
+                        name: this._item["name"],
+                        max_price: this._item["max_price"],
+                        min_price: this._item["min_price"],
+                      ))
+                      : ItemCreate(item: Item(
+                        id: null,
+                        name: this._item["name"],
+                        max_price: this._item["max_price"],
+                        min_price: this._item["min_price"],
+                      ));
+
+                      BlocProvider.of<ItemBloc>(context).add(event);
+                      
                     }
                     
                   },
