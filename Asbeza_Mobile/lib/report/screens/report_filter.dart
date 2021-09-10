@@ -19,8 +19,8 @@ class _ReportFilterState extends State<ReportFilter> {
   @override
   Widget build(BuildContext context) {
     //sample Input
-    var reports = <ReportModel>[
-      ReportModel(
+    var reports = <Report>[
+      Report(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -30,7 +30,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      ReportModel(
+      Report(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -40,7 +40,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      ReportModel(
+      Report(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -50,7 +50,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      ReportModel(
+      Report(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -91,52 +91,57 @@ class _ReportFilterState extends State<ReportFilter> {
 
 _build_fiters_tab() {
   return ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(10)),
-    child: Container(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      child: Container(
         width: double.infinity,
         color: Colors.blue[100],
         padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Icon(
-              Icons.filter_alt_outlined,
-            ),
-            Wrap(
-              direction: Axis.vertical,
-              children: [
-                TextButton(
-                    onPressed: () {
-                      print("All filter");
-                    },
-                    child:
-                        Text('All', style: TextStyle(color: Colors.blue[800]))),
-                TextButton(
-                    onPressed: () {
-                      print("Pending filter");
-                    },
-                    child: Text('Pending',
-                        style: TextStyle(color: Colors.blue[800]))),
-                TextButton(
-                    onPressed: () {
-                      print("Accepted Filter");
-                    },
-                    child: Text('Accepted',
-                        style: TextStyle(color: Colors.blue[800]))),
-                TextButton(
-                    onPressed: () {
-                      print("Declined Filter");
-                    },
-                    child: Text('Declined',
-                        style: TextStyle(color: Colors.blue[800]))),
-              ],
-            ),
-          ],
-        )),
-  );
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Icon(
+            Icons.filter_alt_outlined,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        print("All filter");
+                      },
+                      child: Text('All',
+                          style: TextStyle(color: Colors.blue[800]))),
+                  TextButton(
+                      onPressed: () {
+                        print("Pending filter");
+                      },
+                      child: Text('Pending',
+                          style: TextStyle(color: Colors.blue[800]))),
+                ],
+              ),
+              Row(
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        print("All filter");
+                      },
+                      child: Text('Accepted',
+                          style: TextStyle(color: Colors.blue[800]))),
+                  TextButton(
+                      onPressed: () {
+                        print("Pending filter");
+                      },
+                      child: Text('Declined',
+                          style: TextStyle(color: Colors.blue[800]))),
+                ],
+              ),
+            ],
+          ),
+        ]),
+      ));
 }
 
-_build_report(List<ReportModel> reports, BuildContext context) {
+_build_report(List<Report> reports, BuildContext context) {
   List<Widget> list = [];
   for (var i = 0; i < reports.length; i++) {
     var report = reports[i];

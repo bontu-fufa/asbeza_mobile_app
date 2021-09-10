@@ -1,9 +1,9 @@
-class ReportModel {
+class Report {
   String description, itemName, location, status, reporter;
   int likeCount;
   DateTime date;
 
-  ReportModel({
+  Report({
     required this.description,
     required this.itemName,
     required this.status,
