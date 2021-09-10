@@ -1,44 +1,16 @@
+import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/auth/models/user_model.dart';
+import 'package:asbeza_mobile_app/auth/screens/profile.dart';
+import 'package:asbeza_mobile_app/auth/screens/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = 'login';
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
-}
-
-// function for checking user name and password from api
-Future getUser(Map body) async {
-  return http
-      .post(Uri.parse("http://10.0.2.2:5000/asbeza/api/v1/users/login"),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(body))
-      .then((http.Response response) {
-    final int statusCode = response.statusCode;
-
-    if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception("Error while fetching data");
-    }
-
-    return json.decode(response.body);
-  });
-}
-
-Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-Future addToSession(Map value) async {
-  final SharedPreferences prefs = await _prefs;
-  prefs.setInt("user_id", value['currentUserId']);
-  prefs.setString("user_name", value['currentUserName']);
-  prefs.setString("email", value['currentUserEmail']);
-  prefs.setString("user_type", value['currentUserType']);
-
-  return prefs;
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -113,52 +85,73 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 30,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // run validations
-                    final valid = formKey.currentState!.validate();
-                    if (!valid) {
-                      // do something here.
-                      print("something failed");
-                      return;
-                    }
-                    // Get input and validate values from api
-                    User user = User(
-                        name: nameController.text,
-                        password: passwordController.text);
-                    getUser(user.toMap()).then((value) {
-                      if (value['message'] == 'logged in') {
-                        // TODO: navigate to home page
-                        addToSession(value).then((value) {
-                          print(value.getInt('user_id'));
-                          print(value.getString('user_name'));
-                          print(value.getString('email'));
-                          print(value.getString('user_name'));
-                        });
-                        print("logged in");
-                      } else {
-                        // TODO: display error message
-                        print("not logged in");
-                      }
-                    });
-                  },
-                  child: Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(100.0),
-                    ),
-                    child: Text(
-                      "Login",
+                BlocConsumer<AuthBloc, AuthState>(
+                  listener: (ctx, authState) {
+                  if (authState is AuthFailed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('${authState.errorMsg}')));
+                  }
+
+                  if (authState is LoggedIn) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Logged in successfully')));
+
+                    Navigator.of(context).pushNamed(
+                      ProfileApp.routeName,
+                    );
+                  }
+                }, builder: (ctx, authState) {
+                  Widget buttonChild = Text("Login",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,
+                      ));
+
+                  if (authState is LoginInProgress) {
+                    buttonChild = SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    );
+                  }
+
+                  return GestureDetector(
+                    onTap: () {
+                      // run validations
+                      final valid = formKey.currentState!.validate();
+                      if (!valid) {
+                        // do something here.
+                        print("something failed");
+                        return;
+                      }
+                      // Get input and validate values from api
+                      User user = User(
+                        name: nameController.text,
+                        password: passwordController.text,
+                      );
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(LoginEvent(user: user));
+                    },
+                    child: Container(
+                      height: 60.0,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18.0,
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 SizedBox(
                   height: 25,
                 ),
@@ -169,9 +162,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: 6,
                     ),
-                    Text(
-                      "Signup",
-                      style: TextStyle(color: Colors.blue[400]),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(SignupScreen.routeName);
+                      },
+                      child: Text(
+                        "Signup",
+                        style: TextStyle(color: Colors.blue[400]),
+                      ),
                     )
                   ],
                 ),

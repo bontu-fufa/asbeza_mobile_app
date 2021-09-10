@@ -13,3 +13,18 @@ class SignupEvent extends AuthEvent {
 
   SignupEvent({required this.newUser});
 }
+
+class UpdateProfileEvent extends AuthEvent {
+  final int id;
+  final NewUser newUser;
+
+  UpdateProfileEvent({required this.id, required this.newUser});
+}
+
+class DeleteAccountEvent extends AuthEvent {
+  final int id;
+
+  DeleteAccountEvent({required this.id});
+}
+
+class LogoutEvent extends AuthEvent {}

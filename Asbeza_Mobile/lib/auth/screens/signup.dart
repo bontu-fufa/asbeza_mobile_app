@@ -1,35 +1,21 @@
+import 'package:asbeza_mobile_app/app_route.dart';
 import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
 import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/auth/models/new_user_model.dart';
+import 'package:asbeza_mobile_app/auth/screens/login.dart';
+import 'package:asbeza_mobile_app/item/screens/items_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class SignupScreen extends StatefulWidget {
+  static const routeName = 'signup';
+
   const SignupScreen({Key? key}) : super(key: key);
 
   @override
   _SignupScreenState createState() => _SignupScreenState();
-}
-
-// function for checking user name and password from api
-Future addNewUser(Map body) async {
-  return http
-      .post(Uri.parse("http://10.0.2.2:5000/asbeza/api/v1/users"),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(body))
-      .then((http.Response response) {
-    final int statusCode = response.statusCode;
-
-    if (statusCode < 200 || statusCode > 400 || json == null) {
-      throw new Exception("Error while posting data");
-    }
-
-    return json.decode(response.body);
-  });
 }
 
 class _SignupScreenState extends State<SignupScreen> {
@@ -193,7 +179,10 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       if (authState is SignedUp) {
                         // TODO: navigate to home page
-                        print("Signed up");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Signed up successfully')));
+
+                        Navigator.of(context).pop();
                       }
                     },
                     builder: (ctx, authState) {
@@ -234,8 +223,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             password: password,
                           );
 
-                          BlocProvider.of<AuthBloc>(context).add(SignupEvent(newUser: newUser));
-                          
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(SignupEvent(newUser: newUser));
                         },
                         child: Container(
                           height: 60.0,
@@ -260,9 +249,14 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(
                         width: 6,
                       ),
-                      Text(
-                        "Login",
-                        style: TextStyle(color: Colors.blue[400]),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(color: Colors.blue[400]),
+                        ),
                       )
                     ],
                   ),

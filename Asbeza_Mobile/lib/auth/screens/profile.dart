@@ -1,199 +1,237 @@
+import 'package:asbeza_mobile_app/app_route.dart';
+import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
+import 'package:asbeza_mobile_app/auth/blocs/auth_state.dart';
+import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
+import 'package:asbeza_mobile_app/auth/models/models.dart';
+import 'package:asbeza_mobile_app/auth/screens/login.dart';
+import 'package:asbeza_mobile_app/auth/screens/update_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileApp extends StatelessWidget {
+class ProfileApp extends StatefulWidget {
+  static const routeName = 'profile';
+
+  @override
+  _ProfileAppState createState() => _ProfileAppState();
+}
+
+class _ProfileAppState extends State<ProfileApp> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<String> _user_name, _user_email;
+  late Future<int> _user_id;
+  late String name, email;
+  late int id;
+
+  @override
+  void initState() {
+    _user_name = _prefs.then((SharedPreferences prefs) {
+      return (prefs.getString('user_name') ?? "");
+    });
+    _user_email = _prefs.then((SharedPreferences prefs) {
+      return (prefs.getString('email') ?? "");
+    });
+    _user_id = _prefs.then((SharedPreferences prefs) {
+      return (prefs.getInt('user_id') ?? 0);
+    });
+
+    _user_name.then((value) {
+      name = value;
+    });
+
+    _user_email.then((value) {
+      email = value;
+    });
+
+    _user_id.then((value) {
+      id = value;
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: Column(
         children: <Widget>[
-          Container(
-              decoration: BoxDecoration(
+          Expanded(
+            child: Container(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [Colors.white, Colors.blueAccent])),
-              child: Container(
-                width: double.infinity,
-                height: 350.0,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
-                        ),
-                        radius: 50.0,
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Text(
-                        "JHON DOE",
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5.0),
-                        clipBehavior: Clip.antiAlias,
-                        color: Colors.white,
-                        elevation: 5.0,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 22.0),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Posts",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                      "5200",
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.blueAccent,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Followers",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                      "28.5K",
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.blueAccent,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Follow",
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5.0,
-                                    ),
-                                    Text(
-                                      "1300",
-                                      style: TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.blueAccent,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                      colors: [Colors.blue.shade400, Colors.blue.shade400]),
                 ),
-              )),
-          Container(
-            child: Padding(
+                child: Container(
+                  width: double.infinity,
+                  height: 350.0,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(top: 28),
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.blue[800],
+                          ),
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                          ),
+                          alignment: Alignment.center,
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        FutureBuilder(
+                          future: _user_name,
+                          builder: (ctx, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              default:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(
+                                    "${snapshot.data.toString().toUpperCase()}",
+                                    style: TextStyle(
+                                        fontSize: 32.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  );
+                                }
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        FutureBuilder(
+                          future: _user_email,
+                          builder: (ctx, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.waiting:
+                                return const CircularProgressIndicator();
+                              default:
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else {
+                                  return Text(
+                                    "${snapshot.data.toString()}",
+                                    style: TextStyle(
+                                      fontSize: 22.0,
+                                      color: Colors.grey[200],
+                                    ),
+                                  );
+                                }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+          ),
+          Expanded(
+            child: Container(
               padding:
-                  const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+                  const EdgeInsets.symmetric(vertical: 45.0, horizontal: 28.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Bio:",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 28.0),
+                  GestureDetector(
+                    onTap: () {
+                      final user = NewUser(name: name, email: email);
+                      Navigator.of(context).pushNamed(
+                          UpdateProfileScreen.routeName,
+                          arguments: UserArgument(id: id, user: user));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Edit Profile",
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Icon(
+                          Icons.navigate_next,
+                          color: Colors.grey[850],
+                          size: 32,
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10.0,
                   ),
-                  Text(
-                    'My name is JHON and I am  a freelance mobile app developper.\n'
-                    'if you need any mobile app for your company then contact me for more informations',
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black,
-                      letterSpacing: 2.0,
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (ctx, authState) {
+                      if (authState is DeletedAccount) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Deleted account successfully')));
+                        Navigator.of(ctx)
+                            .pushReplacementNamed(LoginScreen.routeName);
+                      }
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<AuthBloc>(context).add(DeleteAccountEvent(id: id));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Delete Account",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          Icon(
+                            Icons.navigate_next,
+                            color: Colors.grey[850],
+                            size: 32,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (ctx, authState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Logged out')));
+                        Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (_) => false);
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<AuthBloc>(context).add(LogoutEvent());
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Logout",
+                            style: TextStyle(fontSize: 22),
+                          ),
+                          Icon(
+                            Icons.navigate_next,
+                            color: Colors.grey[850],
+                            size: 32,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
-          ),
-          Container(
-            width: 300.00,
-
-            // child: RaisedButton(
-            //   onPressed: (){},
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: BorderRadius.circular(80.0)
-            //   ),
-            //   elevation: 0.0,
-            //     padding: EdgeInsets.all(0.0),
-            //   child: Ink(
-            //     decoration: BoxDecoration(
-            //       gradient: LinearGradient(
-            //         begin: Alignment.centerRight,
-            //         end: Alignment.centerLeft,
-            //         colors: [Colors.white,Colors.blueAccent]
-            //       ),
-            //       borderRadius: BorderRadius.circular(30.0),
-            //     ),
-            //     child: Container(
-            //       constraints: BoxConstraints(maxWidth: 300.0, minHeight: 50.0),
-            //       alignment: Alignment.center,
-            //       child: Text("Contact me",
-            //       style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight:FontWeight.w300),
-            //       ),
-            //     ),
-            //   )
-            // ),
           ),
         ],
       ),
