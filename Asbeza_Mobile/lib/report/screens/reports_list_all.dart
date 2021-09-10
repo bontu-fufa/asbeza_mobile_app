@@ -1,24 +1,25 @@
-import 'package:asbeza_mobile_app/report/models/reports_model.dart';
 import 'package:flutter/material.dart';
+import 'package:asbeza_mobile_app/report/models/reports_model.dart';
 
 //to be deleted
 void main() {
   runApp(
     MaterialApp(
-      home: ReportFilter(),
+      home: ReportsListScreen(),
     ),
   );
 }
 
-class ReportFilter extends StatefulWidget {
+class ReportsListScreen extends StatefulWidget {
+  const ReportsListScreen({Key? key}) : super(key: key);
+
   @override
-  _ReportFilterState createState() => _ReportFilterState();
+  _ReportsListScreenState createState() => _ReportsListScreenState();
 }
 
-class _ReportFilterState extends State<ReportFilter> {
+class _ReportsListScreenState extends State<ReportsListScreen> {
   @override
   Widget build(BuildContext context) {
-    //sample Input
     var reports = <Report>[
       Report(
         itemName: 'Row Coffee',
@@ -71,7 +72,7 @@ class _ReportFilterState extends State<ReportFilter> {
           ),
           // leading: BackButton(color: Colors.white),
           centerTitle: true,
-          title: const Text('Reports')),
+          title: const Text('All Reports')),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
         width: double.infinity,
@@ -79,7 +80,6 @@ class _ReportFilterState extends State<ReportFilter> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _build_fiters_tab(),
               ...reportList,
             ],
           ),
@@ -89,60 +89,11 @@ class _ReportFilterState extends State<ReportFilter> {
   }
 }
 
-_build_fiters_tab() {
-  return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      child: Container(
-        width: double.infinity,
-        color: Colors.blue[100],
-        padding: EdgeInsets.all(10),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Icon(
-            Icons.filter_alt_outlined,
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        print("All filter");
-                      },
-                      child: Text('All',
-                          style: TextStyle(color: Colors.blue[800]))),
-                  TextButton(
-                      onPressed: () {
-                        print("Pending filter");
-                      },
-                      child: Text('Pending',
-                          style: TextStyle(color: Colors.blue[800]))),
-                ],
-              ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        print("All filter");
-                      },
-                      child: Text('Accepted',
-                          style: TextStyle(color: Colors.blue[800]))),
-                  TextButton(
-                      onPressed: () {
-                        print("Pending filter");
-                      },
-                      child: Text('Declined',
-                          style: TextStyle(color: Colors.blue[800]))),
-                ],
-              ),
-            ],
-          ),
-        ]),
-      ));
-}
-
 _build_report(List<Report> reports, BuildContext context) {
   List<Widget> list = [];
+  // to be replaced
+  var is_not_selected = false;
+  //
   for (var i = 0; i < reports.length; i++) {
     var report = reports[i];
     list.add(Container(
@@ -171,11 +122,19 @@ _build_report(List<Report> reports, BuildContext context) {
                         fontSize: 14,
                         color: Colors.blue[300],
                       )),
-                  Icon(
-                    Icons.arrow_circle_up_rounded,
-                    color: Colors.blue[300],
-                    size: 14,
-                  )
+                  is_not_selected
+                      ? Icon(
+                          Icons.arrow_circle_up_rounded,
+                          color: Colors.blue[300],
+                          size: 16,
+                          //if not selected
+                        )
+                      : Icon(
+                          Icons.arrow_circle_up_outlined,
+                          color: Colors.green[900],
+                          size: 16,
+                          //if not selected
+                        )
                 ],
               )
             ],
@@ -199,47 +158,6 @@ _build_report(List<Report> reports, BuildContext context) {
           SizedBox(
             height: 8.0,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Status",
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-              Text(
-                report.status,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.blue[300],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () => showAlertDialog(context),
-                child: Text("change Status"),
-              ),
-              IconButton(
-                  onPressed: () {
-                    print("delete Report");
-                  },
-                  icon: Icon(
-                    Icons.delete_forever,
-                    color: Colors.red,
-                  ))
-            ],
-          ),
-          SizedBox(
-            height: 10.0,
-          )
         ],
       ),
     ));
