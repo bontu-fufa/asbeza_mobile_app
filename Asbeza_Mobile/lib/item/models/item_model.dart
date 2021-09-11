@@ -4,7 +4,7 @@ class Item{
   final double max_price;
   final double min_price;
 
-  Item({required this.id, required this.name, required this.max_price, required this.min_price});
+  Item({this.id, required this.name, required this.max_price, required this.min_price});
 
   factory Item.fromJson(Map json) {
     return Item(

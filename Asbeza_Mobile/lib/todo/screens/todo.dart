@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
+  static const routeName = 'todo';
   
   @override
   _MyAppState createState() => _MyAppState();

@@ -5,6 +5,7 @@ import 'package:asbeza_mobile_app/auth/screens/signup.dart';
 import 'package:asbeza_mobile_app/auth/screens/update_profile.dart';
 import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
 import 'package:asbeza_mobile_app/item/screens/items_list.dart';
+import 'package:asbeza_mobile_app/todo/screens/goods_list.dart';
 import 'package:flutter/material.dart';
 import 'package:asbeza_mobile_app/item/models/models.dart';
 
@@ -12,6 +13,9 @@ class AsbezaAppRoute {
   static Route generateRoute(RouteSettings settings) {
 
     switch (settings.name) {
+      case PurchaseGoods.routeName:
+        return MaterialPageRoute(builder: (context) => PurchaseGoods());
+        
       case ProfileApp.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApp());
 

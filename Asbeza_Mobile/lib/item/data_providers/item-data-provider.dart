@@ -69,7 +69,6 @@ class ItemDataProvider {
   // method to update item info by admin
   Future<Item> update(int id, Item item) async {
     
-    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     Future<String> token;
     String tokenString = "";
     token = _prefs.then((SharedPreferences prefs) {

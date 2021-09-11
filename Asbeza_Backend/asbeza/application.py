@@ -21,7 +21,7 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
         
-        print(request.headers)
+        # print(request.headers)
         
         if 'X-Access-Token' in request.headers:
             token = request.headers['X-Access-Token']
@@ -382,15 +382,19 @@ def get_all_tobe_purchased_or_purchased_goods(current_user):
     u_id = current_user.id
     params = {"user_id": u_id}
 
-    statement = """select * from purchasedGoods where user_id=:user_id"""
+    # statement = """select * from purchasedGoods where user_id=:user_id"""
+    statement = """SELECT items.id, items.name, items.min_price, items.max_price, purchasedGoods.is_purchased, purchasedGoods.user_id, purchasedGoods.item_id FROM items INNER JOIN purchasedGoods ON items.id = purchasedGoods.item_id WHERE purchasedGoods.user_id=3;"""
     purchases = db.session.execute(statement, params).all()
 
     purchases_list = []
     for purchase in purchases:
         purchase_json = {
-            "user_id": purchase.user_id,
-            "item_id": purchase.item_id,
-            "is_purchased": purchase.is_purchased
+            "user_id": u_id,
+            "item_id": purchase.id,
+            "is_purchased": purchase.is_purchased,
+            "name": purchase.name,
+            "min_price": purchase.min_price,
+            "max_price": purchase.max_price
         }
         purchases_list.append(purchase_json)
     
@@ -437,22 +441,26 @@ def update_is_purchased(current_user,item_id):
 
     is_purchased = request.json["is_purchased"]
     params = {"user_id": current_user.id, "item_id": item_id}
-
+    statement = ''
     if is_purchased == True:
         statement = """update purchasedGoods set is_purchased=true where user_id=:user_id and item_id=:item_id"""
+        db.session.execute(statement, params)
+        db.session.commit()
     else:
-        statement = """update purchasedGoods set is_purchased=false where user_id=:user_id and item_id=:item_id"""
+        statement = """update purchasedGoods set is_purchased=false where user_id=:user_id and item_id=:item_id"""    
+        db.session.execute(statement, params)
+        db.session.commit()
 
-    db.session.execute(statement, params)
-    db.session.commit()
-
-    statement = """select * from purchasedGoods where user_id=:user_id AND item_id=:item_id"""
+    statement = """SELECT items.id, items.name, items.min_price, items.max_price, purchasedGoods.is_purchased, purchasedGoods.user_id, purchasedGoods.item_id FROM items INNER JOIN purchasedGoods ON items.id = purchasedGoods.item_id WHERE purchasedGoods.user_id=:user_id AND purchasedGoods.item_id=:item_id"""
     purchase = db.session.execute(statement, params).one()
 
     purchase_json = {
-        "user_id": purchase.user_id,
-        "item_id": purchase.item_id,
-        "is_purchased": purchase.is_purchased
+        "user_id": current_user.id,
+        "item_id": purchase.id,
+        "is_purchased": purchase.is_purchased,
+        "name": purchase.name,
+        "min_price": purchase.min_price,
+        "max_price": purchase.max_price
     }
 
     return jsonify(purchase_json)
