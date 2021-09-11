@@ -11,7 +11,7 @@ class SendReport extends StatefulWidget {
 class _SendReportState extends State<SendReport> {
   @override
   Widget build(BuildContext context) {
-    Item i = Item(name: 'Onion', min_price: 12, max_price: 14);
+    Item i = Item(id: 1, name: 'Onion', min_price: 12, max_price: 14);
 
     final locationTextController = TextEditingController();
     final descriptionTextController = TextEditingController();
@@ -205,7 +205,7 @@ _buil_report_form(Item item) {
         ),
         Text("Add Report Location and Description"),
         SizedBox(
-          height: 10,
+          height: 20,
         ),
         TextFormField(
           minLines: 1,
@@ -216,6 +216,9 @@ _buil_report_form(Item item) {
             labelText: 'Location ',
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
         TextFormField(
           minLines: 1,
           maxLines: 10,
@@ -224,6 +227,9 @@ _buil_report_form(Item item) {
             hintText: "Your report's full description",
             labelText: 'Description ',
           ),
+        ),
+        SizedBox(
+          height: 10,
         ),
         ElevatedButton(
           onPressed: () {},

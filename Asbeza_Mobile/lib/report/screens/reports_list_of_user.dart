@@ -134,7 +134,7 @@ _build_report(List<Report> reports, BuildContext context) {
                           color: Colors.green[900],
                           size: 16,
                           //if not selected
-                        )
+                        ),
                 ],
               )
             ],
@@ -149,11 +149,29 @@ _build_report(List<Report> reports, BuildContext context) {
           SizedBox(
             height: 10.0,
           ),
-          Text(
-            report.description,
-            style: TextStyle(
-              fontSize: 14,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Flexible(
+                child: Text(report.description,
+                    style: TextStyle(
+                      fontSize: 14,
+                    )),
+              ),
+              Icon(
+                Icons.edit,
+                color: Colors.brown[900],
+                size: 20,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Icon(
+                Icons.delete_forever_outlined,
+                color: Colors.red[900],
+                size: 20,
+              )
+            ],
           ),
           SizedBox(
             height: 8.0,
