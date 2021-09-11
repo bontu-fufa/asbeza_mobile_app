@@ -155,8 +155,11 @@ def delete_user(current_user, id):
     """
 
     user = User.get_one_user(id)
-    db.session.delete(user)
+    params = {"user_id": user.id}
+    todel = """DELETE  from users WHERE id =:user_id"""
+    db.session.execute(todel, params)
     db.session.commit()
+
 
     return jsonify({'message' : 'The user has been deleted!'})
 # /USER
@@ -383,7 +386,7 @@ def get_all_tobe_purchased_or_purchased_goods(current_user):
     params = {"user_id": u_id}
 
     # statement = """select * from purchasedGoods where user_id=:user_id"""
-    statement = """SELECT items.id, items.name, items.min_price, items.max_price, purchasedGoods.is_purchased, purchasedGoods.user_id, purchasedGoods.item_id FROM items INNER JOIN purchasedGoods ON items.id = purchasedGoods.item_id WHERE purchasedGoods.user_id=3;"""
+    statement = """SELECT items.id, items.name, items.min_price, items.max_price, purchasedGoods.is_purchased, purchasedGoods.user_id, purchasedGoods.item_id FROM items INNER JOIN purchasedGoods ON items.id = purchasedGoods.item_id WHERE purchasedGoods.user_id=:user_id"""
     purchases = db.session.execute(statement, params).all()
 
     purchases_list = []
@@ -441,7 +444,8 @@ def update_is_purchased(current_user,item_id):
 
     is_purchased = request.json["is_purchased"]
     params = {"user_id": current_user.id, "item_id": item_id}
-    statement = ''
+
+
     if is_purchased == True:
         statement = """update purchasedGoods set is_purchased=true where user_id=:user_id and item_id=:item_id"""
         db.session.execute(statement, params)

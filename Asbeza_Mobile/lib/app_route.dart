@@ -1,3 +1,4 @@
+import 'package:asbeza_mobile_app/admin_homepage.dart';
 import 'package:asbeza_mobile_app/auth/models/models.dart';
 import 'package:asbeza_mobile_app/auth/screens/login.dart';
 import 'package:asbeza_mobile_app/auth/screens/profile.dart';
@@ -6,35 +7,44 @@ import 'package:asbeza_mobile_app/auth/screens/update_profile.dart';
 import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
 import 'package:asbeza_mobile_app/item/screens/items_list.dart';
 import 'package:asbeza_mobile_app/todo/screens/goods_list.dart';
+import 'package:asbeza_mobile_app/user_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:asbeza_mobile_app/item/models/models.dart';
 
 class AsbezaAppRoute {
   static Route generateRoute(RouteSettings settings) {
-
     switch (settings.name) {
+      case UserHomepage.routeName:
+        int ind = settings.arguments as int;
+        return MaterialPageRoute(builder: (context) => UserHomepage(ind: ind));
+
+      case AdminHomepage.routeName:
+        return MaterialPageRoute(builder: (context) => AdminHomepage());
+
       case PurchaseGoods.routeName:
         return MaterialPageRoute(builder: (context) => PurchaseGoods());
-        
+
       case ProfileApp.routeName:
         return MaterialPageRoute(builder: (context) => ProfileApp());
 
       case SignupScreen.routeName:
         return MaterialPageRoute(builder: (context) => SignupScreen());
-      
+
       case ItemList.routeName:
         return MaterialPageRoute(builder: (context) => ItemList());
 
       case PostItemPriceScreen.routeName:
         ItemArgument args = settings.arguments as ItemArgument;
-        return MaterialPageRoute(builder: (context) => PostItemPriceScreen(args: args));
+        return MaterialPageRoute(
+            builder: (context) => PostItemPriceScreen(args: args));
 
       case UpdateProfileScreen.routeName:
         UserArgument args = settings.arguments as UserArgument;
-        return MaterialPageRoute(builder: (context) => UpdateProfileScreen(args: args));
+        return MaterialPageRoute(builder: (context) => UpdateProfileScreen());
+
+      default:
+        return MaterialPageRoute(builder: (context) => LoginScreen());
     }
-    
-    return MaterialPageRoute(builder: (context) => LoginScreen());
   }
 }
 

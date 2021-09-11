@@ -3,6 +3,7 @@ import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
 import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/auth/models/new_user_model.dart';
 import 'package:asbeza_mobile_app/auth/screens/profile.dart';
+import 'package:asbeza_mobile_app/user_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,9 +11,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   static const routeName = 'editProfile';
-  final UserArgument args;
+  // final UserArgument args;
 
-  UpdateProfileScreen({required this.args});
+  UpdateProfileScreen();
+  // UpdateProfileScreen({required this.args});
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
@@ -58,7 +60,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,7 +258,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         // TODO: navigate to home page
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Updated successfully')));
-                        Navigator.of(context).pushReplacementNamed(ProfileApp.routeName);
+                        Navigator.of(context).pushReplacementNamed(UserHomepage.routeName);
                         // Navigator.of(context).pop();
                       }
                     },

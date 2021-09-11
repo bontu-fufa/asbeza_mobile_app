@@ -5,6 +5,7 @@ import 'package:asbeza_mobile_app/todo/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/todo/models/models.dart';
 import 'package:asbeza_mobile_app/todo/models/todo_model.dart';
 import 'package:asbeza_mobile_app/todo/screens/goods_list.dart';
+import 'package:asbeza_mobile_app/user_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -127,7 +128,7 @@ class _ItemListState extends State<ItemList> {
                                         print(state.todo.item.name);
                                         
                                         Navigator.of(context).pushReplacementNamed(
-                                          PurchaseGoods.routeName,
+                                          UserHomepage.routeName, arguments: 1
                                         );
                                       }
                                     },

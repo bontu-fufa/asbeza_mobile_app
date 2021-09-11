@@ -23,6 +23,8 @@ class _PurchaseGoodsState extends State<PurchaseGoods> {
 
     _user_id.then((value) {
       id = value;
+
+      BlocProvider.of<TodoBloc>(context).add(LoadTodo(userId: id));
     });
 
     super.initState();
@@ -32,10 +34,10 @@ class _PurchaseGoodsState extends State<PurchaseGoods> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {},
-            ),
+            // leading: IconButton(
+            //   icon: Icon(Icons.arrow_back),
+            //   onPressed: () {},
+            // ),
             // leading: BackButton(color: Colors.white),
             centerTitle: true,
             title: const Text('Aszeza Goods')),
@@ -46,7 +48,8 @@ class _PurchaseGoodsState extends State<PurchaseGoods> {
         body: BlocConsumer<TodoBloc, TodoState>(
             listener: (ctx, state) {},
             builder: (ctx, state) {
-              if ((state is TodoLoaded && state.todos.length == 0) || state is TodoOperationFailed) {
+              if ((state is TodoLoaded && state.todos.length == 0) ||
+                  state is TodoOperationFailed) {
                 return Center(child: Text("No list to display"));
               }
               if (state is TodoLoaded) {
@@ -164,7 +167,7 @@ class _PurchaseGoodsState extends State<PurchaseGoods> {
               if (state is TodoOperationFailed)
                 return Text("Unable to load todo");
 
-              if (state is TodoInProgress) {
+              if (state is TodoInProgress || state is TodoLoading) {
                 return Center(child: CircularProgressIndicator());
               }
 

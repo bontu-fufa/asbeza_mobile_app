@@ -176,11 +176,11 @@ class _ProfileAppState extends State<ProfileApp> {
                       if (authState is DeletedAccount) {
                         ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Deleted account successfully')));
-                        Navigator.of(ctx)
+                        Navigator.of(context)
                             .pushReplacementNamed(LoginScreen.routeName);
                       }
                     },
-                    child: GestureDetector(
+                    child: GestureDetector( 
                       onTap: () {
                         BlocProvider.of<AuthBloc>(context).add(DeleteAccountEvent(id: id));
                       },

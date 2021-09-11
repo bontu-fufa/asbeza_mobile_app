@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:asbeza_mobile_app/report/models/reports_model.dart';
 
-//to be deleted
-void main() {
-  runApp(
-    MaterialApp(
-      home: UserReportsListScreen(),
-    ),
-  );
-}
-
 class UserReportsListScreen extends StatefulWidget {
   const UserReportsListScreen({Key? key}) : super(key: key);
 

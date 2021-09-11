@@ -90,8 +90,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       yield DeleteAccountInProgress();
       try {
-        await authRepository.delete(id);
-        await _prefs.then((value) => value.clear());
+        final result = await authRepository.delete(id);
+        final clear = await _prefs.then((value) => value.clear());
+        _prefs.then((value) {
+          print(value.getString("user_name"));
+        });
         yield DeletedAccount();
       } catch (e) {
         print(e);

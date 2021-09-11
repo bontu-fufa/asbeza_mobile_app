@@ -2,6 +2,7 @@ import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/auth/models/user_model.dart';
 import 'package:asbeza_mobile_app/auth/screens/profile.dart';
 import 'package:asbeza_mobile_app/auth/screens/signup.dart';
+import 'package:asbeza_mobile_app/user_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -97,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SnackBar(content: Text('Logged in successfully')));
 
                     Navigator.of(context).pushNamed(
-                      ProfileApp.routeName,
+                      UserHomepage.routeName,
                     );
                   }
                 }, builder: (ctx, authState) {

@@ -1,3 +1,4 @@
+import 'package:asbeza_mobile_app/admin_homepage.dart';
 import 'package:asbeza_mobile_app/auth/data_providers/auth-data-provider.dart';
 import 'package:asbeza_mobile_app/auth/repository/auth-repository.dart';
 import 'package:asbeza_mobile_app/auth/screens/login.dart';
@@ -9,6 +10,7 @@ import 'package:asbeza_mobile_app/item/screens/items_list.dart';
 import 'package:asbeza_mobile_app/todo/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/todo/data_providers/todo_data_provider.dart';
 import 'package:asbeza_mobile_app/todo/repository/todo_repository.dart';
+import 'package:asbeza_mobile_app/user_homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:asbeza_mobile_app/auth/blocs/blocs.dart';
@@ -49,8 +51,8 @@ class MyApp extends StatelessWidget {
               ItemBloc(itemRepository: this.itemRepository)..add(ItemLoad()),
         ),
         BlocProvider(
-          create: (ctx) =>
-              TodoBloc(todoRepository: this.todoRepository)..add(LoadTodo(userId: userId)),
+          create: (ctx) => TodoBloc(todoRepository: this.todoRepository)
+            ..add(LoadTodo(userId: userId)),
         ),
       ],
       child: MaterialApp(
@@ -73,15 +75,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     _prefs.then((value) {
-      if (value.containsKey("user_id")) {
-        Timer(Duration(seconds: 1), () {
-          Navigator.of(context).pushReplacementNamed(ItemList.routeName);
-        });
-      } else {
-        Timer(Duration(seconds: 1), () {
+      Timer(Duration(seconds: 1), () {
+        if (value.containsKey("user_id")) {
+          if (value.getString("user_type") == "admin") {
+            Navigator.of(context).pushReplacementNamed(AdminHomepage.routeName);
+          } else {
+            Navigator.of(context).pushReplacementNamed(UserHomepage.routeName, arguments: 0);
+          }
+        } else {
           Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-        });
-      }
+        }
+      });
     });
   }
 
