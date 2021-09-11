@@ -20,7 +20,8 @@ class ItemDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     print(await tokenString);
     final http.Response response = await http.post(Uri.parse(_baseUrl),
@@ -49,7 +50,8 @@ class ItemDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     print(await tokenString);
 
@@ -74,7 +76,8 @@ class ItemDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     print(await tokenString);
 
@@ -106,9 +109,8 @@ class ItemDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
-
-    print(await tokenString);
+    
+    tokenString = await token;
 
     final response = await http.delete(Uri.parse("$_baseUrl/$id"), headers: {
       "Content-Type": "application/json",

@@ -16,7 +16,8 @@ class AuthDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     final http.Response response = await http.post(Uri.parse("$_baseUrl/users"),
         headers: {
@@ -44,7 +45,8 @@ class AuthDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     final response = await http.post(
       Uri.parse("$_baseUrl/login"),
@@ -68,7 +70,8 @@ class AuthDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     print(await tokenString);
     try {
@@ -104,7 +107,8 @@ class AuthDataProvider {
     token = _prefs.then((SharedPreferences prefs) {
       return (prefs.getString('token') ?? "");
     });
-    token.then((value) => tokenString = value);
+    
+    tokenString = await token;
 
     print(await tokenString);
 
