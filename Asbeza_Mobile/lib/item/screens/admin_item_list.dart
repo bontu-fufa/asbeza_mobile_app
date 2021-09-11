@@ -1,4 +1,3 @@
-import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
 import 'package:flutter/material.dart';
 import 'package:asbeza_mobile_app/item/models/item_model.dart';
 
@@ -18,7 +17,7 @@ class AdminItemList extends StatefulWidget {
 }
 
 class _AdminItemListState extends State<AdminItemList> {
-  static const routeName = '/AdminItemList';
+  static const routeName = '/adminItemList';
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +36,13 @@ class _AdminItemListState extends State<AdminItemList> {
             // leading: BackButton(color: Colors.white),
             centerTitle: true,
             title: const Text('Aszeza Items List')),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => PostItemPriceScreen()));
+          },
+          child: Icon(Icons.add),
+        ),
         body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
           width: double.infinity,
