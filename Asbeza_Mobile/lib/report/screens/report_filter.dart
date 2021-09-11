@@ -27,7 +27,7 @@ class _ReportFilterState extends State<ReportFilter> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter: "Abebe",
+        reporter_id: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -37,7 +37,7 @@ class _ReportFilterState extends State<ReportFilter> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter: "Abebe",
+        reporter_id: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -47,7 +47,7 @@ class _ReportFilterState extends State<ReportFilter> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter: "Abebe",
+        reporter_id: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -57,7 +57,7 @@ class _ReportFilterState extends State<ReportFilter> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter: "Abebe",
+        reporter_id: "Abebe",
         likeCount: 34,
       ),
     ];
