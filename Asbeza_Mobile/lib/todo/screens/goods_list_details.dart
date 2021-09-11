@@ -21,7 +21,9 @@ class _PurchaseGoodsDetailsState extends State<PurcahseGoodsDetails> {
 
   @override
   Widget build(BuildContext context) {
-    var items = <Item>[Item(name: "banana", min_price: 10, max_price: 25)];
+    var items = <Item>[
+      // Item(name: "banana", min_price: 10, max_price: 25),
+    ];
     var goodsList = _build_goods(items);
 
     return Scaffold(

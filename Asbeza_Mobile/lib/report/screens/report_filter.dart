@@ -19,8 +19,8 @@ class _ReportFilterState extends State<ReportFilter> {
   @override
   Widget build(BuildContext context) {
     //sample Input
-    var reports = <Report>[
-      Report(
+    var reports = <Report1>[
+      Report1(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -30,7 +30,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      Report(
+      Report1(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -40,7 +40,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      Report(
+      Report1(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -50,7 +50,7 @@ class _ReportFilterState extends State<ReportFilter> {
         reporter: "Abebe",
         likeCount: 34,
       ),
-      Report(
+      Report1(
         itemName: 'Row Coffee',
         description:
             "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
@@ -141,7 +141,7 @@ _build_fiters_tab() {
       ));
 }
 
-_build_report(List<Report> reports, BuildContext context) {
+_build_report(List<Report1> reports, BuildContext context) {
   List<Widget> list = [];
   for (var i = 0; i < reports.length; i++) {
     var report = reports[i];

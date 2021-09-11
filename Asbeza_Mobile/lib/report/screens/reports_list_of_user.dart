@@ -20,47 +20,17 @@ class UserReportsListScreen extends StatefulWidget {
 class _ReportsListScreenState extends State<UserReportsListScreen> {
   @override
   Widget build(BuildContext context) {
-    var reports = <Report>[
-      Report(
-        itemName: 'Row Coffee',
-        description:
-            "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
-        date: DateTime.now(),
-        location: 'Addis Ababa',
-        status: "pending",
-        reporter: "Abebe",
-        likeCount: 34,
-      ),
-      Report(
-        itemName: 'Row Coffee',
-        description:
-            "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
-        date: DateTime.now(),
-        location: 'Addis Ababa',
-        status: "pending",
-        reporter: "Abebe",
-        likeCount: 34,
-      ),
-      Report(
-        itemName: 'Row Coffee',
-        description:
-            "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
-        date: DateTime.now(),
-        location: 'Addis Ababa',
-        status: "pending",
-        reporter: "Abebe",
-        likeCount: 34,
-      ),
-      Report(
-        itemName: 'Row Coffee',
-        description:
-            "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
-        date: DateTime.now(),
-        location: 'Addis Ababa',
-        status: "pending",
-        reporter: "Abebe",
-        likeCount: 34,
-      ),
+    var reports = <Report1>[
+      // Report1(
+      //   itemName: 'Row Coffee',
+      //   description:
+      //       "Nullam sit amet diam id tortor sagittis sodales. Praesent laoreet at nisi eget ultrices. Cras id lobortis ipsum. Nullam suscipit magna in elit fermentum, quis pulvinar nisi blandit.",
+      //   date: DateTime.now(),
+      //   location: 'Addis Ababa',
+      //   status: "pending",
+      //   reporter: "Abebe",
+      //   likeCount: 34,
+      // ),
     ];
     var reportList = _build_report(reports, context);
 
@@ -89,7 +59,7 @@ class _ReportsListScreenState extends State<UserReportsListScreen> {
   }
 }
 
-_build_report(List<Report> reports, BuildContext context) {
+_build_report(List<Report1> reports, BuildContext context) {
   List<Widget> list = [];
   // to be replaced
   var is_not_selected = false;
