@@ -21,7 +21,7 @@ class ReportUpdate extends ReportEvent {
 }
 
 class ReportDelete extends ReportEvent {
-  final Report report;
+  final int id;
 
-  ReportDelete({required this.report});
+  ReportDelete({required this.id});
 }
