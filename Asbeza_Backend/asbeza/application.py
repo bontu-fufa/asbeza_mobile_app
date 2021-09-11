@@ -249,9 +249,27 @@ def get_all_report(current_user):
     """
     Get all the reports
     """
-    reports = Report.get_all_reports()
+    # reports = Report.get_all_reports()
     
-    return jsonify(reports_schema.dump(reports))
+    # return jsonify(reports_schema.dump(reports))
+    u_id = current_user.id
+    params = {"user_id": u_id}
+
+    # statement = """select * from purchasedGoods where user_id=:user_id"""
+    statement = """SELECT items.id, items.name, items.min_price, items.max_price, reports.location, reports.description, reports.status, reports.like_counts FROM items INNER JOIN reports ON items.id = reports.item_id"""
+    reports = db.session.execute(statement, params).all()
+
+    reports_list = []
+    for report in reports:
+        report_json = {
+            'description': report.description,
+            'item_id': report.id,
+            'location': report.location,
+            'item_name': report.name,
+        }
+        reports_list.append(report_json)
+    
+    return jsonify(reports_list)
     
 
 @bp.route('/reports', methods=['POST'])
