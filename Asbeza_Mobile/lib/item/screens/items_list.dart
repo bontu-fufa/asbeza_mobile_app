@@ -1,9 +1,13 @@
-import 'package:asbeza_mobile_app/auth/blocs/auth_bloc.dart';
 import 'package:asbeza_mobile_app/item/blocs/blocs.dart';
 import 'package:asbeza_mobile_app/item/screens/item_add_update.dart';
 import 'package:asbeza_mobile_app/app_route.dart';
+import 'package:asbeza_mobile_app/todo/blocs/blocs.dart';
+import 'package:asbeza_mobile_app/todo/models/models.dart';
+import 'package:asbeza_mobile_app/todo/models/todo_model.dart';
+import 'package:asbeza_mobile_app/todo/screens/goods_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemList extends StatefulWidget {
   static const routeName = 'itemList';
@@ -14,6 +18,23 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late Future<int> _user_id;
+  late int id;
+
+  @override
+  void initState() {
+    _user_id = _prefs.then((SharedPreferences prefs) {
+      return (prefs.getInt('user_id') ?? 0);
+    });
+
+    _user_id.then((value) {
+      id = value;
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -99,9 +120,39 @@ class _ItemListState extends State<ItemList> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  ElevatedButton(
-                                    child: Text("Add to list"),
-                                    onPressed: () {},
+                                  BlocListener<TodoBloc, TodoState>(
+                                    listener: (ctx, state) {
+                                      if (state is TodoCreated) {
+                                        // TODO: navigate to todo list page
+                                        print(state.todo.item.name);
+                                        
+                                        Navigator.of(context).pushReplacementNamed(
+                                          PurchaseGoods.routeName,
+                                        );
+                                      }
+                                    },
+                                    child: ElevatedButton(
+                                      child: Text("Add to list"),
+                                      onPressed: () {
+                                        final purchaseItem = PurchaseItem(
+                                            id: items.elementAt(index).id,
+                                            name: items.elementAt(index).name,
+                                            max_price: items
+                                                .elementAt(index)
+                                                .max_price,
+                                            min_price: items
+                                                .elementAt(index)
+                                                .min_price);
+
+                                        final todo = Todo(
+                                            isPurchased: false,
+                                            userId: id,
+                                            item: purchaseItem);
+                                        BlocProvider.of<TodoBloc>(context).add(
+                                          AddTodoEvent(userId: id, todo: todo),
+                                        );
+                                      },
+                                    ),
                                   ),
                                   ElevatedButton(
                                     child: Text("Report"),
