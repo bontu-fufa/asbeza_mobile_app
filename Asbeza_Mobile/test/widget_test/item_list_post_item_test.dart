@@ -19,16 +19,7 @@ void main() {
     final splash = find.byType(TextButton);
     expect(splash, findsNWidgets(4));
    });
-// testWidgets('appbar checker', (WidgetTester tester) async{
-//   await tester.pumpWidget(SendReport());
-//   final appbarr = find.byType(AppBar);
-//   expect(appbarr, findsOneWidget);
-// });
-// testWidgets('scaffold checker', (WidgetTester tester) async {
-//   await tester.pumpWidget(SendReport());
-//   final scaffoldd = find.byType(Scaffold);
-//   expect(scaffoldd, findsOneWidget);
-// });
+
 testWidgets('DraggableScrollableSheet', (WidgetTester tester) async {
   await tester.pumpWidget(MyApp());
   final drag = find.byType(DraggableScrollableSheet);
@@ -49,9 +40,6 @@ testWidgets('Testing the button of signin', (WidgetTester tester) async {
             create: (context) => ItemBloc(
                 itemRepository: ItemRepository(dataProvider: ItemDataProvider())
           ),)
-          // BlocProvider(
-          //     create: (context) =>
-          //         HomePageBloc(repository: homePageRepository)),
         ],
         child: MaterialApp(
           home: PostItemPriceScreen(args: ItemArgument(edit: true),),
