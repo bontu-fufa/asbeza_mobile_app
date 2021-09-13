@@ -1,51 +1,15 @@
-import 'dart:convert';
-
-import 'package:asbeza_mobile_app/todo/models/models.dart';
-
 class Report {
-  String description;
-  String location;
-  String status;
-  String reporter_id;
-  String? date;
+  String description, itemName, location, status, reporter;
   int likeCount;
-  int id;
-  PurchaseItem item;
+  DateTime date;
 
   Report({
     required this.description,
-    required this.location,
+    required this.itemName,
     required this.status,
-    required this.reporter_id,
-    this.date,
+    required this.location,
+    required this.reporter,
     required this.likeCount,
-    required this.id,
-    required this.item,
+    required this.date,
   });
-
-  factory Report.fromJson(Map json, PurchaseItem item) {
-    return Report(
-        item: item,
-        description: json["description"],
-        location: json["location"],
-        status: json['status'],
-        reporter_id: json['reporter_id'],
-        likeCount: json['like_counts'],
-        id: json['id']
-      );
-  }
-
-  Map<String, dynamic> toMap() {
-    var map = new Map<String, dynamic>();
-    map['id'] = id;
-    map['description'] = description;
-    map['item_id'] = item.id;
-    map['like_counts'] = likeCount;
-    map['location'] = location;
-    map['reporter_id'] = reporter_id;
-    map['status'] = status;
-
-    return map;
-  }
 }
-      

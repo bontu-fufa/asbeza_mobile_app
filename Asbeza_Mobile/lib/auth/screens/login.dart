@@ -99,6 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Navigator.of(context).pushNamed(
                       UserHomepage.routeName,
+                      arguments: 0
                     );
                   }
                 }, builder: (ctx, authState) {

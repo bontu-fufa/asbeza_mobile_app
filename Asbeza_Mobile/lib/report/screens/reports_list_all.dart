@@ -28,7 +28,7 @@ class _ReportsListScreenState extends State<ReportsListScreen> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter_id: "Abebe",
+        reporter: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -38,7 +38,7 @@ class _ReportsListScreenState extends State<ReportsListScreen> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter_id: "Abebe",
+        reporter: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -48,7 +48,7 @@ class _ReportsListScreenState extends State<ReportsListScreen> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter_id: "Abebe",
+        reporter: "Abebe",
         likeCount: 34,
       ),
       Report(
@@ -58,7 +58,7 @@ class _ReportsListScreenState extends State<ReportsListScreen> {
         date: DateTime.now(),
         location: 'Addis Ababa',
         status: "pending",
-        reporter_id: "Abebe",
+        reporter: "Abebe",
         likeCount: 34,
       ),
     ];

@@ -258,7 +258,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         // TODO: navigate to home page
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Updated successfully')));
-                        Navigator.of(context).pushReplacementNamed(UserHomepage.routeName);
+                        Navigator.of(context).pushReplacementNamed(UserHomepage.routeName, arguments: 3);
                         // Navigator.of(context).pop();
                       }
                     },
